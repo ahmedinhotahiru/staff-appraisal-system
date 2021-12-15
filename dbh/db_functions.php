@@ -128,6 +128,23 @@ function select_all_where_desc_id($table_name, $where_field, $where_keyword, $pr
 }
 
 
+
+function select_all_where_asc_id($table_name, $where_field, $where_keyword, $primary_key) {
+    global $pdo;
+    
+
+    $sql = "SELECT * FROM $table_name WHERE $where_field = ? ORDER BY $primary_key asc";
+
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$where_keyword]);
+    $result = $stmt->fetchAll();
+    
+
+    return $result;
+}
+
+
 function select_where_limit($table, $where_field, $where_keyword, $limit) {
     global $pdo;
     $table_name = mysqli_real_escape_string($pdo, $table);

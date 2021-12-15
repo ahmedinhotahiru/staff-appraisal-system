@@ -411,81 +411,82 @@
                                                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                                                     
                                                         <div>
-                                                            <div class="form-group mb-3">
-                                                                <label>Year :</label>
-                                                                <select data-trigger class="form-select">
-                                                                    <option value="">Select fiscal year</option>
+                                                            <form action="search-results.php" method="post">
 
-                                                                    <?php
+                                                                <div class="form-group mb-3">
+                                                                    <label>Year :</label>
+                                                                    <select data-trigger class="form-select" name="fiscal_session_id">
+                                                                        <option value="">Select fiscal year</option>
 
-                                                                        // get all fiscal years
-                                                                        $fiscal_sessions = select_all_desc_id("fiscal_sessions", "fiscal_session_id");
+                                                                        <?php
 
-                                                                        if(count($fiscal_sessions) > 0) {
+                                                                            // get all fiscal years
+                                                                            $fiscal_sessions = select_all_desc_id("fiscal_sessions", "fiscal_session_id");
 
-                                                                            foreach ($fiscal_sessions as $fiscal_session) {
-                                                                                
-                                                                                $fiscal_session_id = $fiscal_session['fiscal_session_id'];
-                                                                                $fiscal_year = $fiscal_session['fiscal_year'];
+                                                                            if(count($fiscal_sessions) > 0) {
 
-                                                                                ?>
-                                                                                
-                                                                                <option value="<?php echo $fiscal_session_id; ?>"><?php echo $fiscal_year; ?></option>
-                                                                                            
-                                                                                
-                                                                                <?php
+                                                                                foreach ($fiscal_sessions as $fiscal_session) {
+                                                                                    
+                                                                                    $fiscal_session_id = $fiscal_session['fiscal_session_id'];
+                                                                                    $fiscal_year = $fiscal_session['fiscal_year'];
+
+                                                                                    ?>
+                                                                                    
+                                                                                    <option value="<?php echo $fiscal_session_id; ?>"><?php echo $fiscal_year; ?></option>
+                                                                                                
+                                                                                    
+                                                                                    <?php
+                                                                                }
                                                                             }
-                                                                        }
 
-                                                                    ?>
-                                                                    
-                                                                </select>
-                                                            </div>
+                                                                        ?>
+                                                                        
+                                                                    </select>
+                                                                </div>
 
-                                                            <div class="form-group mb-3">
-                                                                <label>HOD :</label>
-                                                                <select data-trigger class="form-select">
-                                                                    <option value="">Select HOD</option>
-                                                                    
-                                                                    <?php
+                                                                <div class="form-group mb-3">
+                                                                    <label>HOD :</label>
+                                                                    <select data-trigger class="form-select" name="staff_id">
+                                                                        <option value="">Select HOD</option>
+                                                                        
+                                                                        <?php
 
-                                                                        // get all fiscal years
-                                                                        $all_hods = select_all_asc_id("staff", "staff_name");
+                                                                            // get all hods
+                                                                        
+                                                                            $all_hods = select_all_where_asc_id("staff", "role", "HOD", "staff_name");
 
-                                                                        if(count($all_hods) > 0) {
+                                                                            if(count($all_hods) > 0) {
 
-                                                                            foreach ($all_hods as $search_hod) {
-                                                                                
-                                                                                $hod_staff_id = $search_hod['staff_id'];
-                                                                                $hod_staff_name = $search_hod['staff_name'];
+                                                                                foreach ($all_hods as $search_hod) {
+                                                                                    
+                                                                                    $hod_staff_id = $search_hod['staff_id'];
+                                                                                    $hod_staff_name = $search_hod['staff_name'];
 
-                                                                                ?>
-                                                                                
-                                                                                <option value="<?php echo $hod_staff_id; ?>"><?php echo $hod_staff_name; ?></option>
-                                                                                            
-                                                                                
-                                                                                <?php
+                                                                                    ?>
+                                                                                    
+                                                                                    <option value="<?php echo $hod_staff_id; ?>"><?php echo $hod_staff_name; ?></option>
+                                                                                                
+                                                                                    
+                                                                                    <?php
+                                                                                }
                                                                             }
-                                                                        }
 
-                                                                    ?>
+                                                                        ?>
 
-                                                                </select>
-                                                            </div>
+                                                                    </select>
+                                                                </div>
 
-                                                            
-        
+                                                                <!-- submit button year only -->
+                                                                <div class="text-center mb-3">
+                                                                    <button type="submit" name="search_year_only" class="btn btn-sm btn-success w-md">Search by year only</button>
+                                                                </div>
 
-                                                            <div class="text-center mb-3">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-success w-md">Search by year only</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="text-center">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-primary w-md">Search by all fields</button>
-                                                                </form>
-                                                            </div>
+                                                                <!-- submit button all fields -->
+                                                                <div class="text-center">
+                                                                    <button type="submit" name="search_all_fields" class="btn btn-sm btn-primary w-md">Search by all fields</button>
+                                                                </div>
+
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     
@@ -639,35 +640,80 @@
                                                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                                                     
                                                         <div>
-                                                            <div class="form-group mb-3">
-                                                                <label>Year :</label>
-                                                                <select class="form-select">
-                                                                    <option>2020/2021</option>
-                                                                    <option>2021/2022</option>
-                                                                </select>
-                                                            </div>
+                                                            <form action="search-results.php" method="post">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Year :</label>
+                                                                    <select data-trigger class="form-select" name="fiscal_session_id">
+                                                                        <option value="">Select fiscal year</option>
 
-                                                            <div class="form-group mb-3">
-                                                                <label>Lecturer :</label>
-                                                                <select class="form-select">
-                                                                    <option>Ahmed Issah</option>
-                                                                    <option>Jude Apana</option>
-                                                                </select>
-                                                            </div>
+                                                                        <?php
 
-                                                            
-        
+                                                                            // get all fiscal years
+                                                                            $fiscal_sessions = select_all_desc_id("fiscal_sessions", "fiscal_session_id");
 
-                                                            <div class="text-center mb-3">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm w-md" style="background: #3d700a; color: white;">Search by year only</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="text-center">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-danger w-md">Search by all fields</button>
-                                                                </form>
-                                                            </div>
+                                                                            if(count($fiscal_sessions) > 0) {
+
+                                                                                foreach ($fiscal_sessions as $fiscal_session) {
+                                                                                    
+                                                                                    $fiscal_session_id = $fiscal_session['fiscal_session_id'];
+                                                                                    $fiscal_year = $fiscal_session['fiscal_year'];
+
+                                                                                    ?>
+                                                                                    
+                                                                                    <option value="<?php echo $fiscal_session_id; ?>"><?php echo $fiscal_year; ?></option>
+                                                                                                
+                                                                                    
+                                                                                    <?php
+                                                                                }
+                                                                            }
+
+                                                                        ?>
+                                                                        
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group mb-3">
+                                                                    <label>Lecturer :</label>
+                                                                    <select data-trigger class="form-select" name="staff_id">
+                                                                        <option value="">Select Lecturer</option>
+                                                                        
+                                                                        <?php
+
+                                                                            // get all lecturers
+                                                                            $all_lecturers = select_all_where_asc_id("staff", "role", "Lecturer", "staff_name");
+
+
+                                                                            if(count($all_lecturers) > 0) {
+
+                                                                                foreach ($all_lecturers as $search_lecturer) {
+                                                                                    
+                                                                                    $lecturer_staff_id = $search_lecturer['staff_id'];
+                                                                                    $lecturer_staff_name = $search_lecturer['staff_name'];
+
+                                                                                    ?>
+                                                                                    
+                                                                                    <option value="<?php echo $lecturer_staff_id; ?>"><?php echo $lecturer_staff_name; ?></option>
+                                                                                                
+                                                                                    
+                                                                                    <?php
+                                                                                }
+                                                                            }
+
+                                                                        ?>
+
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- submit button year only -->
+                                                                <div class="text-center mb-3">
+                                                                    <button type="submit" name="search_year_only" class="btn btn-sm w-md" style="background: #3d700a; color: white;">Search by year only</button>
+                                                                </div>
+
+                                                                <!-- submit button all fields -->
+                                                                <div class="text-center">
+                                                                    <button type="submit" name="search_all_fields" class="btn btn-sm btn-danger w-md">Search by all fields</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
 
