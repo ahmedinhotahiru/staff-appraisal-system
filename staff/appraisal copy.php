@@ -44,7 +44,8 @@
 
 
 
-        <form action="" method="post">
+
+
 
                 <div class="page-content">
                     <div class="container-fluid">
@@ -78,7 +79,9 @@
                                     </div>
                                     <div class="card-body">
 
+
                                         <div id="progrss-wizard" class="twitter-bs-wizard">
+                                            
                                             <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
 
                                                 <!-- attitude to work -->
@@ -112,15 +115,6 @@
                                                 <li class="nav-item">
                                                     <a href="#progress-administration" class="nav-link" data-toggle="tab">
                                                         <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Administration">
-                                                            <i class="bx bx-book-bookmark"></i>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <!-- administration -->
-                                                <li class="nav-item">
-                                                    <a href="#progress-confirm" class="nav-link" data-toggle="tab">
-                                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Administration">
                                                             <i class="bx bxs-bank"></i>
                                                         </div>
                                                     </a>
@@ -135,6 +129,7 @@
                                             </div>
 
                                             <div class="tab-content twitter-bs-wizard-tab-content">
+                                            <form action="" method="post">
 
 
                                                 <!-- attitude to work -->
@@ -160,31 +155,31 @@
                                                                             <td>Attendance and Punctuality to work</td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="attendance" id="attendance1" value="1">
+                                                                                    <input class="" type="radio" name="attendance" id="attendance1" value="1">
                                                                                     <label class="form-check-label" for="attendance1"> 1</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="attendance" id="attendance2" value="2">
+                                                                                    <input class="" type="radio" name="attendance" id="attendance2" value="2">
                                                                                     <label class="form-check-label" for="attendance2"> 2</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="attendance" id="attendance3" value="3">
+                                                                                    <input class="" type="radio" name="attendance" id="attendance3" value="3">
                                                                                     <label class="form-check-label" for="attendance3"> 3</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="attendance" id="attendance4" value="4">
+                                                                                    <input class="" type="radio" name="attendance" id="attendance4" value="4">
                                                                                     <label class="form-check-label" for="attendance4"> 4</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="attendance" id="attendance5" value="5">
+                                                                                    <input class="" type="radio" name="attendance" id="attendance5" value="5">
                                                                                     <label class="form-check-label" for="attendance5"> 5</label>
                                                                                 </span>
                                                                             </td>
@@ -194,31 +189,31 @@
                                                                             <td>Meets work deadline in a timely and efficient manner</td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="deadline" id="deadline_1" value="1">
+                                                                                    <input class="" type="radio" name="deadline" id="deadline_1" value="1">
                                                                                     <label class="form-check-label" for="deadline_1"> 1</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="deadline" id="deadline_2" value="2">
+                                                                                    <input class="" type="radio" name="deadline" id="deadline_2" value="2">
                                                                                     <label class="form-check-label" for="deadline_2"> 2</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="deadline" id="deadline_3" value="3">
+                                                                                    <input class="" type="radio" name="deadline" id="deadline_3" value="3">
                                                                                     <label class="form-check-label" for="deadline_3"> 3</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="deadline" id="deadline_4" value="4">
+                                                                                    <input class="" type="radio" name="deadline" id="deadline_4" value="4">
                                                                                     <label class="form-check-label" for="deadline_4"> 4</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="deadline" id="deadline_5" value="5">
+                                                                                    <input class="" type="radio" name="deadline" id="deadline_5" value="5">
                                                                                     <label class="form-check-label" for="deadline_5"> 5</label>
                                                                                 </span>
                                                                             </td>
@@ -258,31 +253,31 @@
                                                                             <td>Demonstrate effective positive customer/student service</td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="student_service" id="student_service1" value="1">
+                                                                                    <input class="" type="radio" name="student_service" id="student_service1" value="1">
                                                                                     <label class="form-check-label" for="student_service1"> 1</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="student_service" id="student_service2" value="2">
+                                                                                    <input class="" type="radio" name="student_service" id="student_service2" value="2">
                                                                                     <label class="form-check-label" for="student_service2"> 2</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="student_service" id="student_service3" value="3">
+                                                                                    <input class="" type="radio" name="student_service" id="student_service3" value="3">
                                                                                     <label class="form-check-label" for="student_service3"> 3</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="student_service" id="student_service4" value="4">
+                                                                                    <input class="" type="radio" name="student_service" id="student_service4" value="4">
                                                                                     <label class="form-check-label" for="student_service4"> 4</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="student_service" id="student_service5" value="5">
+                                                                                    <input class="" type="radio" name="student_service" id="student_service5" value="5">
                                                                                     <label class="form-check-label" for="student_service5"> 5</label>
                                                                                 </span>
                                                                             </td>
@@ -292,31 +287,31 @@
                                                                             <td>Relates well with colleagues and superiors</td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="relates_well" id="relates_well1" value="1">
+                                                                                    <input class="" type="radio" name="relates_well" id="relates_well1" value="1">
                                                                                     <label class="form-check-label" for="relates_well1"> 1</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="relates_well" id="relates_well2" value="2">
+                                                                                    <input class="" type="radio" name="relates_well" id="relates_well2" value="2">
                                                                                     <label class="form-check-label" for="relates_well2"> 2</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="relates_well" id="relates_well3" value="3">
+                                                                                    <input class="" type="radio" name="relates_well" id="relates_well3" value="3">
                                                                                     <label class="form-check-label" for="relates_well3"> 3</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="relates_well" id="relates_well4" value="4">
+                                                                                    <input class="" type="radio" name="relates_well" id="relates_well4" value="4">
                                                                                     <label class="form-check-label" for="relates_well4"> 4</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="relates_well" id="relates_well5" value="5">
+                                                                                    <input class="" type="radio" name="relates_well" id="relates_well5" value="5">
                                                                                     <label class="form-check-label" for="relates_well5"> 5</label>
                                                                                 </span>
                                                                             </td>
@@ -326,31 +321,31 @@
                                                                             <td>Encourages collaboration and sharing of information</td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="collaboration" id="collaboration1" value="1">
+                                                                                    <input class="" type="radio" name="collaboration" id="collaboration1" value="1">
                                                                                     <label class="form-check-label" for="collaboration1"> 1</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="collaboration" id="collaboration2" value="2">
+                                                                                    <input class="" type="radio" name="collaboration" id="collaboration2" value="2">
                                                                                     <label class="form-check-label" for="collaboration2"> 2</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="collaboration" id="collaboration3" value="3">
+                                                                                    <input class="" type="radio" name="collaboration" id="collaboration3" value="3">
                                                                                     <label class="form-check-label" for="collaboration3"> 3</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="collaboration" id="collaboration4" value="4">
+                                                                                    <input class="" type="radio" name="collaboration" id="collaboration4" value="4">
                                                                                     <label class="form-check-label" for="collaboration4"> 4</label>
                                                                                 </span>
                                                                             </td>
                                                                             <td>
                                                                                 <span class="">
-                                                                                    <input required class="" type="radio" name="collaboration" id="collaboration5" value="5">
+                                                                                    <input class="" type="radio" name="collaboration" id="collaboration5" value="5">
                                                                                     <label class="form-check-label" for="collaboration5"> 5</label>
                                                                                 </span>
                                                                             </td>
@@ -391,31 +386,31 @@
                                                                                 <td>Fair and appropriate evaluation methods</td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="evaluation_methods" id="evaluation_methods1" value="1">
+                                                                                        <input class="" type="radio" name="evaluation_methods" id="evaluation_methods1" value="1">
                                                                                         <label class="form-check-label" for="evaluation_methods1"> 1</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="evaluation_methods" id="evaluation_methods2" value="2">
+                                                                                        <input class="" type="radio" name="evaluation_methods" id="evaluation_methods2" value="2">
                                                                                         <label class="form-check-label" for="evaluation_methods2"> 2</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="evaluation_methods" id="evaluation_methods3" value="3">
+                                                                                        <input class="" type="radio" name="evaluation_methods" id="evaluation_methods3" value="3">
                                                                                         <label class="form-check-label" for="evaluation_methods3"> 3</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="evaluation_methods" id="evaluation_methods4" value="4">
+                                                                                        <input class="" type="radio" name="evaluation_methods" id="evaluation_methods4" value="4">
                                                                                         <label class="form-check-label" for="evaluation_methods4"> 4</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="evaluation_methods" id="evaluation_methods5" value="5">
+                                                                                        <input class="" type="radio" name="evaluation_methods" id="evaluation_methods5" value="5">
                                                                                         <label class="form-check-label" for="evaluation_methods5"> 5</label>
                                                                                     </span>
                                                                                 </td>
@@ -425,31 +420,31 @@
                                                                                 <td>Assignments contribute to learning</td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="assignments" id="assignments1" value="1">
+                                                                                        <input class="" type="radio" name="assignments" id="assignments1" value="1">
                                                                                         <label class="form-check-label" for="assignments1"> 1</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="assignments" id="assignments2" value="2">
+                                                                                        <input class="" type="radio" name="assignments" id="assignments2" value="2">
                                                                                         <label class="form-check-label" for="assignments2"> 2</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="assignments" id="assignments3" value="3">
+                                                                                        <input class="" type="radio" name="assignments" id="assignments3" value="3">
                                                                                         <label class="form-check-label" for="assignments3"> 3</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="assignments" id="assignments4" value="4">
+                                                                                        <input class="" type="radio" name="assignments" id="assignments4" value="4">
                                                                                         <label class="form-check-label" for="assignments4"> 4</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="assignments" id="assignments5" value="5">
+                                                                                        <input class="" type="radio" name="assignments" id="assignments5" value="5">
                                                                                         <label class="form-check-label" for="assignments5"> 5</label>
                                                                                     </span>
                                                                                 </td>
@@ -459,31 +454,31 @@
                                                                                 <td>Sufficient number of assignments</td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="sufficient_assignments" id="sufficient_assignments1" value="1">
+                                                                                        <input class="" type="radio" name="sufficient_assignments" id="sufficient_assignments1" value="1">
                                                                                         <label class="form-check-label" for="sufficient_assignments1"> 1</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="sufficient_assignments" id="sufficient_assignments2" value="2">
+                                                                                        <input class="" type="radio" name="sufficient_assignments" id="sufficient_assignments2" value="2">
                                                                                         <label class="form-check-label" for="sufficient_assignments2"> 2</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="sufficient_assignments" id="sufficient_assignments3" value="3">
+                                                                                        <input class="" type="radio" name="sufficient_assignments" id="sufficient_assignments3" value="3">
                                                                                         <label class="form-check-label" for="sufficient_assignments3"> 3</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="sufficient_assignments" id="sufficient_assignments4" value="4">
+                                                                                        <input class="" type="radio" name="sufficient_assignments" id="sufficient_assignments4" value="4">
                                                                                         <label class="form-check-label" for="sufficient_assignments4"> 4</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="sufficient_assignments" id="sufficient_assignments5" value="5">
+                                                                                        <input class="" type="radio" name="sufficient_assignments" id="sufficient_assignments5" value="5">
                                                                                         <label class="form-check-label" for="sufficient_assignments5"> 5</label>
                                                                                     </span>
                                                                                 </td>
@@ -525,31 +520,31 @@
                                                                                 <td>Adheres to University policy and rules of conduct</td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="adheres_to_rules" id="adheres_to_rules1" value="1">
+                                                                                        <input class="" type="radio" name="adheres_to_rules" id="adheres_to_rules1" value="1">
                                                                                         <label class="form-check-label" for="adheres_to_rules1"> 1</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="adheres_to_rules" id="adheres_to_rules2" value="2">
+                                                                                        <input class="" type="radio" name="adheres_to_rules" id="adheres_to_rules2" value="2">
                                                                                         <label class="form-check-label" for="adheres_to_rules2"> 2</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="adheres_to_rules" id="adheres_to_rules3" value="3">
+                                                                                        <input class="" type="radio" name="adheres_to_rules" id="adheres_to_rules3" value="3">
                                                                                         <label class="form-check-label" for="adheres_to_rules3"> 3</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="adheres_to_rules" id="adheres_to_rules4" value="4">
+                                                                                        <input class="" type="radio" name="adheres_to_rules" id="adheres_to_rules4" value="4">
                                                                                         <label class="form-check-label" for="adheres_to_rules4"> 4</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="adheres_to_rules" id="adheres_to_rules5" value="5">
+                                                                                        <input class="" type="radio" name="adheres_to_rules" id="adheres_to_rules5" value="5">
                                                                                         <label class="form-check-label" for="adheres_to_rules5"> 5</label>
                                                                                     </span>
                                                                                 </td>
@@ -559,71 +554,35 @@
                                                                                 <td>Adheres to Departmental procedures and regulations for marking of examination scripts</td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="marking_of_scripts" id="marking_of_scripts1" value="1">
+                                                                                        <input class="" type="radio" name="marking_of_scripts" id="marking_of_scripts1" value="1">
                                                                                         <label class="form-check-label" for="marking_of_scripts1"> 1</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="marking_of_scripts" id="marking_of_scripts2" value="2">
+                                                                                        <input class="" type="radio" name="marking_of_scripts" id="marking_of_scripts2" value="2">
                                                                                         <label class="form-check-label" for="marking_of_scripts2"> 2</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="marking_of_scripts" id="marking_of_scripts3" value="3">
+                                                                                        <input class="" type="radio" name="marking_of_scripts" id="marking_of_scripts3" value="3">
                                                                                         <label class="form-check-label" for="marking_of_scripts3"> 3</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="marking_of_scripts" id="marking_of_scripts4" value="4">
+                                                                                        <input class="" type="radio" name="marking_of_scripts" id="marking_of_scripts4" value="4">
                                                                                         <label class="form-check-label" for="marking_of_scripts4"> 4</label>
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span class="">
-                                                                                        <input required class="" type="radio" name="marking_of_scripts" id="marking_of_scripts5" value="5">
+                                                                                        <input class="" type="radio" name="marking_of_scripts" id="marking_of_scripts5" value="5">
                                                                                         <label class="form-check-label" for="marking_of_scripts5"> 5</label>
                                                                                     </span>
                                                                                 </td>
                                                                             </tr>
-
-
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                      <ul class="pager wizard twitter-bs-wizard-pager-link">
-                                                        <li class="previous"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i
-                                                                    class="bx bx-chevron-left me-1"></i> Previous</a></li>
-                                                        <li class="float-end"><a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target=".confirmModal" onclick="result()">Save
-                                                                Changes</a></li>
-                                                    </ul>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- administration -->
-                                                <div class="tab-pane" id="progress-confirm">
-                                                    <div>
-                                                        <div class="text-center mb-4">
-                                                            <h5>confirm</h5>
-                                                            <p class="card-title-desc">Fill all information below</p>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-
-                                                                <div class="table table-responsive">
-                                                                    <table class="table table-hover">
-                                                                        <tbody>
-
-                                                                            <p>djjh</p>
 
 
                                                                         </tbody>
@@ -644,26 +603,11 @@
                                                 </div>
 
 
-                                                <script>
-                                                    function result() {
-                                                        var result = "";
-                                                        result = parseInt(document.querySelector('input[name="adheres_to_rules"]:checked').value);
-
-                                                        if(result=="undefined") {
-                                                            document.getElementById("resultError").innerHTML = "Couldn't compute results. Some questions were left unanswered";
-                                                            
-                                                        }
-                                                        else {
-                                                            document.getElementById("resultH").innerHTML = result;
-                                                        }
-                                                    }
-                                                </script>
-
-                                                
-
-
                                             </div>
                                         </div>
+
+                                    </form>
+
                                     </div>
                                     <!-- end card body -->
                                 </div>
@@ -699,14 +643,12 @@
                                     <div class="mb-3">
                                         <i class="bx bx-check-circle display-4 text-success"></i>
                                     </div>
-                                    <h5 id="resultH"></h5>
-                                    <p class="text-danger" id="resultError"></p>
-                                    <!-- <h5>Confirm Save Changes</h5> -->
+                                    <h5>Confirm Save Changes</h5>
                                 </div>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary w-md" data-bs-dismiss="modal"
+                                <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
                                     onclick="nextTab()">Save changes</button>
                             </div>
                         </div>
@@ -716,7 +658,7 @@
 
                 
 
-        </form>
+
 
 
 

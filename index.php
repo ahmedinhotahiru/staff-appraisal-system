@@ -46,51 +46,101 @@
                                             <h5 class="mb-0">Staff Appraisal</h5>
                                             <p class="text-muted mt-2">Sign in to continue to Portal.</p>
                                         </div>
-                                        <form class="mt-4 pt-2" action="">
+
+
+
+
+
+                                        <!-- display error messages here -->
+                                        <?php
+                                            if(isset($_GET['error'])) {
+                                                $error = $_GET['error'];
+                                                switch ($error) {
+                                                    case 'empty':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                All fields are required!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+
+
+                                                    case 'user':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Staff ID not found!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+
+                                                    case 'password':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Invalid Password!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+
+                                                    case 'login':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Login required!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+                                                    
+                                                    default:
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                An error occured, try again!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+                                                }
+                                            }
+
+                                            if(isset($_GET['newPwd']) && $_GET['newPwd']== "updateSuccess") {
+                                                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                        <i class="mdi mdi-check-all me-2"></i>
+                                                        Password successfully changed. Please login with new password
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                      </div>';
+                                            }
+
+                                        ?>
+
+
+
+
+
+
+
+
+                                        <form class="mt-4 pt-2" action="login.php" method="POST">
+
                                             <div class="mb-3">
-                                                <label class="form-label">Username</label>
-                                                <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                                <label class="form-label">Staff ID</label>
+                                                <input type="text" required name="staff_id_no" class="form-control" id="staff_id" placeholder="Enter Staff ID" value="<?php if(isset($_GET['staff_id_no'])) {echo $_GET['staff_id_no'];} ?>">
                                             </div>
+
                                             <div class="mb-3">
                                                 <div class="d-flex align-items-start">
                                                     <div class="flex-grow-1">
                                                         <label class="form-label">Password</label>
                                                     </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="">
-                                                            <a href="auth-recoverpw.php" class="text-muted">Forgot password?</a>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                                 
                                                 <div class="input-group auth-pass-inputgroup">
-                                                    <input type="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
+                                                    <input type="password" required name="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
                                                     <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
                                                 </div>
                                             </div>
-                                            <div class="row mb-4">
-                                                <div class="col-md-3">
-                                                    <span>
-                                                        <input class="form-check-input" type="radio" id="remember-check" name="position">
-                                                        <label class="form-check-label" for="remember-check">
-                                                            Dean
-                                                        </label>
-                                                    </span> 
-                                                    
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <span>
-                                                        <input class="form-check-input" type="radio" id="remember-check2" name="position">
-                                                        <label class="form-check-label" for="remember-check2">
-                                                            HOD
-                                                        </label>
-                                                    </span> 
-                                                </div>
-                                                
+                                            <div class="text-center">
+                                                <a href="auth-recoverpw.php" class="text-muted">Forgot password?</a>
                                             </div>
-                                            <div class="mb-3">
-                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                                            <div class="my-3">
+                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit" name="login">Log In</button>
                                             </div>
                                         </form>
 

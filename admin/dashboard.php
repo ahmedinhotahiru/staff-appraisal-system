@@ -39,116 +39,128 @@
             // get last/current fiscal session id
             $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
 
-            $last_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+            if(count($last_fiscal_session) > 0) {
 
-            // get last fiscal year and its deadline
-            $last_fiscal_year = $last_fiscal_session[0]['fiscal_year'];
-            $last_deadline = $last_fiscal_session[0]['deadline'];
+            
 
-            // determine deadline arrow color
-            if(strtotime($last_deadline) < strtotime(date("Y-m-d"))) {
-                $deadline_arrow_color = "danger";
-            }
-            else {
-                $deadline_arrow_color = "success";
-            }
+                $last_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
 
-            $last_appraisals = select_all_where("appraisal", "fiscal_session_id", $last_fiscal_session_id);
+                // get last fiscal year and its deadline
+                $last_fiscal_year = $last_fiscal_session[0]['fiscal_year'];
+                $last_deadline = $last_fiscal_session[0]['deadline'];
 
-            // $n = count($appraised_staff);
-            // echo "<script>alert('$n');</script>";
-
-            if(count($last_appraisals) > 0) {
-
-                $no_of_lecturers_appraised = 0;
-                $no_of_hods_appraised = 0;
-
-
-                // create container to hold hod and lecturer grand means
-                $hod_grand_means_array = array();
-                $lecturers_grand_means_array = array();
-
-                foreach ($last_appraisals as $appraisal_result) {
-
-                    // get grand mean
-                    $grand_mean = $appraisal_result['grand_mean'];
-
-                    
-                    // get the staff id and check the staff role
-
-                    $staff_id = $appraisal_result['staff_id'];
-
-                    // get staff role
-                    $role = select_all_where("staff", "staff_id", $staff_id)[0]["role"];
-
-                    if($role == "HOD") {
-                        $no_of_hods_appraised++;
-                        $hod_grand_means_array[] = $grand_mean;
-
-                    }
-                    else {
-                        $no_of_lecturers_appraised++;
-                        $lecturers_grand_means_array[] = $grand_mean;
-                    }
-
+                // determine deadline arrow color
+                if(strtotime($last_deadline) < strtotime(date("Y-m-d"))) {
+                    $deadline_arrow_color = "danger";
                 }
+                else {
+                    $deadline_arrow_color = "success";
+                }
+
+                $last_appraisals = select_all_where("appraisal", "fiscal_session_id", $last_fiscal_session_id);
+
+
+                if(count($last_appraisals) > 0) {
+
+                    $no_of_lecturers_appraised = 0;
+                    $no_of_hods_appraised = 0;
+
+
+                    // create container to hold hod and lecturer grand means
+                    $hod_grand_means_array = array();
+                    $lecturers_grand_means_array = array();
+
+                    foreach ($last_appraisals as $appraisal_result) {
+
+                        // get grand mean
+                        $grand_mean = $appraisal_result['grand_mean'];
+
+                        
+                        // get the staff id and check the staff role
+
+                        $staff_id = $appraisal_result['staff_id'];
+
+                        // get staff role
+                        $role = select_all_where("staff", "staff_id", $staff_id)[0]["role"];
+
+                        if($role == "HOD") {
+                            $no_of_hods_appraised++;
+                            $hod_grand_means_array[] = $grand_mean;
+
+                        }
+                        else {
+                            $no_of_lecturers_appraised++;
+                            $lecturers_grand_means_array[] = $grand_mean;
+                        }
+
+                    }
+                }
+                else {
+                    $no_of_lecturers_appraised = 0;
+                    $no_of_hods_appraised = 0;
+
+                    $hod_grand_means_array = array();
+                    $lecturers_grand_means_array = array();
+                }
+
+
+
+                // get numbers of avg, good and poor performances for hods
+                $hod_analysis_result = analysis_results($hod_grand_means_array);
+
+                $no_of_hods_average = $hod_analysis_result[0];
+                $no_of_hods_good = $hod_analysis_result[1];
+                $no_of_hods_poor = $hod_analysis_result[2];
+
+
+                // calculate percentages for hod
+                $hod_analysis_percentages = analysis_percentages($hod_analysis_result);
+
+                $percentage_hod_average = $hod_analysis_percentages[0];
+                $percentage_hod_good = $hod_analysis_percentages[1];
+                $percentage_hod_poor = $hod_analysis_percentages[2];
+
+
+
+                // get numbers of avg, good and poor performances for hods
+                $lecturers_analysis_result = analysis_results($lecturers_grand_means_array);
+
+                $no_of_lecturers_average = $lecturers_analysis_result[0];
+                $no_of_lecturers_good = $lecturers_analysis_result[1];
+                $no_of_lecturers_poor = $lecturers_analysis_result[2];
+
+
+                // calculate percentages for lecturers
+                $lecturers_analysis_percentages = analysis_percentages($lecturers_analysis_result);
+
+                $percentage_lecturers_average = $lecturers_analysis_percentages[0];
+                $percentage_lecturers_good = $lecturers_analysis_percentages[1];
+                $percentage_lecturers_poor = $lecturers_analysis_percentages[2];
+
+                // array format = (avg, good, poor)
+
+
+
+                // calculate percentage progress of HOD appraisal
+                $total_no_of_hods = no_of_rows_where("staff", "role", "HOD");
+                $percentage_progress_hods = ($no_of_hods_appraised / $total_no_of_hods) * 100;
+                $percentage_appraised_hods = round($percentage_progress_hods, 0);
+
+
+                // calculate percentage progress of lecturer appraisal
+                $total_no_of_lecturers = no_of_rows_where("staff", "role", "Lecturer");
+                $percentage_progress_lecturers = ($no_of_lecturers_appraised / $total_no_of_lecturers) * 100;
+                $percentage_appraised_lecturers = round($percentage_progress_lecturers, 0);
+            
             }
             else {
-                $no_of_lecturers_appraised = 0;
-                $no_of_hods_appraised = 0;
 
-                $hod_grand_means_array = array();
-                $lecturers_grand_means_array = array();
+                echo "<script>
+                        alert('No Fiscal Session found. Please add a fiscal session');
+                        window.location.href = 'fiscal-sessions.php';
+                      </script>";
+                exit();
             }
-
-
-
-            // get numbers of avg, good and poor performances for hods
-            $hod_analysis_result = analysis_results($hod_grand_means_array);
-
-            $no_of_hods_average = $hod_analysis_result[0];
-            $no_of_hods_good = $hod_analysis_result[1];
-            $no_of_hods_poor = $hod_analysis_result[2];
-
-
-            // calculate percentages for hod
-            $hod_analysis_percentages = analysis_percentages($hod_analysis_result);
-
-            $percentage_hod_average = $hod_analysis_percentages[0];
-            $percentage_hod_good = $hod_analysis_percentages[1];
-            $percentage_hod_poor = $hod_analysis_percentages[2];
-
-
-
-            // get numbers of avg, good and poor performances for hods
-            $lecturers_analysis_result = analysis_results($lecturers_grand_means_array);
-
-            $no_of_lecturers_average = $lecturers_analysis_result[0];
-            $no_of_lecturers_good = $lecturers_analysis_result[1];
-            $no_of_lecturers_poor = $lecturers_analysis_result[2];
-
-
-            // calculate percentages for lecturers
-            $lecturers_analysis_percentages = analysis_percentages($lecturers_analysis_result);
-
-            $percentage_lecturers_average = $lecturers_analysis_percentages[0];
-            $percentage_lecturers_good = $lecturers_analysis_percentages[1];
-            $percentage_lecturers_poor = $lecturers_analysis_percentages[2];
-
-            // array format = (avg, good, poor)
-
-
-
-            // calculate percentage progress of HOD appraisal
-            $total_no_of_hods = no_of_rows_where("staff", "role", "HOD");
-            $percentage_progress_hods = ($no_of_hods_appraised / $total_no_of_hods) * 100;
-            $percentage_appraised_hods = round($percentage_progress_hods, 0);
-
-
-            // calculate percentage progress of lecturer appraisal
-            $total_no_of_lecturers = no_of_rows_where("staff", "role", "Lecturer");
-            $percentage_progress_lecturers = ($no_of_lecturers_appraised / $total_no_of_lecturers) * 100;
-            $percentage_appraised_lecturers = round($percentage_progress_lecturers, 0);
             
         ?>
 
@@ -411,11 +423,11 @@
                                                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                                                     
                                                         <div>
-                                                            <form action="search-results.php" method="post">
+                                                            <form action="appraisal-history-hod.php" method="post">
 
                                                                 <div class="form-group mb-3">
                                                                     <label>Year :</label>
-                                                                    <select data-trigger class="form-select" name="fiscal_session_id">
+                                                                    <select required class="form-select" name="year">
                                                                         <option value="">Select fiscal year</option>
 
                                                                         <?php
@@ -640,10 +652,11 @@
                                                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                                                     
                                                         <div>
-                                                            <form action="search-results.php" method="post">
+                                                            <form action="appraisal-history-lecturer.php" method="post">
+
                                                                 <div class="form-group mb-3">
                                                                     <label>Year :</label>
-                                                                    <select data-trigger class="form-select" name="fiscal_session_id">
+                                                                    <select required class="form-select" name="year">
                                                                         <option value="">Select fiscal year</option>
 
                                                                         <?php
@@ -713,6 +726,7 @@
                                                                 <div class="text-center">
                                                                     <button type="submit" name="search_all_fields" class="btn btn-sm btn-danger w-md">Search by all fields</button>
                                                                 </div>
+
                                                             </form>
                                                         </div>
                                                     </div>

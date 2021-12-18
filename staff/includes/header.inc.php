@@ -2,8 +2,9 @@
 <?php
     session_start();
 
-    if(!isset($_SESSION['appraisal_user_id']) || empty($_SESSION['appraisal_user_id'])) {
-        header("Location: index.php?error=login");
+    if(!isset($_SESSION['appraisal_user_id']) || empty($_SESSION['appraisal_user_id']) || !isset($_SESSION['appraisal_staff_id']) || empty($_SESSION['appraisal_staff_id'])) {
+
+        header("Location: ../index.php?error=login");
     }
     else {
         include "../dbh/dbh.php";
@@ -30,7 +31,7 @@
                     
                     if( !($stmt->execute([2, $appraisal_fiscal_session_id])) ) {
                         echo "<script>
-                            alert('Some expired appraisal sessions are still open and could not be closed automatically. Please go to sessions and manually close them');
+                            alert('Some expired appraisal sessions are still open and could not be closed automatically. They will be closed manually soon');
                             
                         </script>";
                     }
@@ -40,6 +41,26 @@
         }
     }
 
+?>
+
+
+
+
+
+<!-- url -->
+<?php
+
+    if($_SESSION['appraisal_role'] == "Dean") {
+
+        $dashboard_url = "index_dean.php";
+        $appraisal_history_url = "appraisal-history-hod.php";
+    }
+    else {
+
+        $dashboard_url = "index_hod.php";
+        $appraisal_history_url = "appraisal-history-lecturer.php";
+
+    }
 ?>
 
 
@@ -55,21 +76,21 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
-                            <a href="index.php" class="logo logo-dark">
+                            <a href="<?php echo $dashboard_url; ?>" class="logo logo-dark">
                                 <span class="logo-sm">
                                     <img src="../assets/images/logo.png" alt="" height="24">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="../assets/images/logo.png" alt="" height="24"> <span class="logo-txt">Dean</span>
+                                    <img src="../assets/images/logo.png" alt="" height="24"> <span class="logo-txt"><?php echo $_SESSION['appraisal_role']; ?></span>
                                 </span>
                             </a>
 
-                            <a href="index.php" class="logo logo-light">
+                            <a href="<?php echo $dashboard_url; ?>" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="../assets/images/logo.png" alt="" height="24">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="../assets/images/logo.png" alt="" height="24"> <span class="logo-txt">Dean</span>
+                                    <img src="../assets/images/logo.png" alt="" height="24"> <span class="logo-txt"><?php echo $_SESSION['appraisal_role']; ?></span>
                                 </span>
                             </a>
                         </div>
@@ -109,20 +130,7 @@
                             </div>
                         </div>
 
-                        <!-- <div class="dropdown d-none d-sm-inline-block">
-                            <button type="button" class="btn header-item"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img id="header-lang-img" src="../assets/images/flags/us.jpg" alt="Header Language" height="16">
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-
-                               
-                                <a href="#" class="dropdown-item notify-item language" data-lang="en">
-                                    <img src="../assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
-                                </a>
-
-                            </div>
-                        </div> -->
+                       
 
                         <div class="dropdown d-none d-sm-inline-block">
                             <button type="button" class="btn header-item" id="mode-setting-btn">
@@ -154,29 +162,7 @@
                                     </div>
                                 </div>
 
-                                <!-- <div data-simplebar style="max-height: 230px;">
-                                    <a href="#!" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <img src="../assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="user-pic">
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-1">James Lemire</h6>
-                                                <div class="font-size-13 text-muted">
-                                                    <p class="mb-1">It will seem like simplified English.</p>
-                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>1 hours ago</span></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div> -->
-
-                                <!-- <div class="p-2 border-top d-grid">
-                                    <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                        <i class="mdi mdi-arrow-right-circle me-1"></i> <span>View More..</span> 
-                                    </a>
-                                </div> -->
-
+                                
                             </div>
                         </div>
 
@@ -191,7 +177,7 @@
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="rounded-circle header-profile-user" src="../assets/images/profile.jpg"
                                     alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium">Ophelius Y.</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium"><?php echo $_SESSION['appraisal_title'] . " " . $_SESSION['appraisal_staff_name']; ?></span>
                                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -199,13 +185,15 @@
                                 <a class="dropdown-item" href="profile.php"><i class="mdi mdi-face-profile font-size-16 align-middle me-1"></i> Profile</a>
                                 <!-- <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock font-size-16 align-middle me-1"></i> Lock screen</a> -->
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
+                                <a class="dropdown-item" href="../logout.php"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </header>
+
+            
 
             
 
@@ -221,7 +209,7 @@
                             <li class="menu-title" data-key="t-menu">Menu</li>
 
                             <li>
-                                <a href="index.php">
+                                <a href="<?php echo $dashboard_url; ?>">
                                     <i data-feather="home"></i>
                                     <span data-key="t-dashboard">Dashboard</span>
                                 </a>
@@ -234,8 +222,8 @@
                                     <span data-key="t-pages">Appraisal</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="appraisal-select.php" data-key="t-starter-page">Staff Appraisal</a></li>
-                                    <li><a href="appraisal-history.php" data-key="t-maintenance">History</a></li>
+                                    <li><a href="appraisal-select-session.php" data-key="t-starter-page">Staff Appraisal</a></li>
+                                    <li><a href="<?php echo $appraisal_history_url; ?>" data-key="t-maintenance">History</a></li>
                                 </ul>
                             </li>
 
@@ -244,19 +232,15 @@
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow">
                                     <i data-feather="users"></i>
-                                    <span data-key="t-authentication">HODs</span>
+                                    <span data-key="t-authentication"><?php echo $_SESSION['appraisal_staff_to_appraise']; ?>s</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="hods.php" data-key="t-login">All HODs</a></li>
+                                    <li><a href="all-staff.php" data-key="t-login">All <?php echo $_SESSION['appraisal_staff_to_appraise']; ?>s</a></li>
                                     <!-- <li><a href="auth-register.html" data-key="t-register">Register</a></li> -->
                                 </ul>
                             </li>
 
-                            
-
-
-                            <!-- <li class="menu-title mt-2" data-key="t-components">Elements</li> -->
-
+                        
                             
 
                             <li>
@@ -287,3 +271,12 @@
             <!-- Start right Content here -->
             <!-- ============================================================== -->
             <div class="main-content">
+
+
+
+
+
+
+
+
+            

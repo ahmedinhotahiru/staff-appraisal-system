@@ -49,15 +49,26 @@
                                             </div>
                                             <div class="p-2 mt-4">
                                                 <h4>Check your email</h4>
-                                                <p>We have sent you password reset link <span class="fw-bold">example@abc.com</span>, Please check it</p>
+                                                <p>
+                                                    We have sent you password reset link to
+                                                    <span class="fw-bold"><?php echo isset($_GET['email']) && !empty($_GET['email']) ? $_GET['email'] : "your email"; ?></span>, Please check it
+                                                </p>
                                                 <div class="mt-4">
-                                                    <a href="auth-confirm-code.php" class="btn btn-primary w-10">Enter reset code</a>
+                                                    <!-- <a href="auth-confirm-code.php" class="btn btn-primary w-10">Enter reset code</a> -->
+                                                    <form action="reset-password-request.php" method="post">
+                                                        <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">
+                                                        <button type="submit" name="reset-password" class="btn btn-primary w-10">Re-send reset link</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mt-5 text-center">
-                                            <p class="text-muted mb-0">Didn't receive an email ? <a href="#"
-                                                    class="text-primary fw-semibold"> Resend </a> </p>
+                                            <p class="text-muted mb-0">Remember your password ? 
+                                                <a href="index.php"
+                                                    class="text-primary fw-semibold"> Login 
+                                                </a> 
+
+                                                </p>
                                         </div>
                                     </div>
                                     

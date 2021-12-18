@@ -189,7 +189,7 @@
                                                         <th>Staff Name</th>
                                                         <th>Department</th>
                                                         <!-- <th>Department</th> -->
-                                                        <th>Position</th>
+                                                        <th>School/Faculty</th>
                                                         <th style="width: 150px;">Email</th>
                                                         <th style="width: 90px;">Action</th>
                                                     </tr>
@@ -213,6 +213,8 @@
                                                                 $position = $hod['position'];
                                                                 $email = $hod['email'];
 
+                                                                $department_school_faculty_id = department_school_faculty_id($sch_fac_dept_id);
+
                                                                 ?>
                                                                 
                                                                 <tr>
@@ -223,11 +225,12 @@
                                                                         </div>
                                                                     </td>
                                                                     
-                                                                    <td><a href="javascript: void(0);" class="text-dark fw-medium"><?php echo $staff_id_no; ?></a> </td>
+                                                                    <td><span class="text-dark fw-medium"><?php echo $staff_id_no; ?></span> </td>
 
                                                                     <td><?php echo $title . " " . $staff_name; ?></td>
                                                                     <td><?php echo department_name($sch_fac_dept_id); ?></td>
-                                                                    <td><?php echo $position; ?></td>
+                                                                    <td><?php echo school_faculty_acronym($department_school_faculty_id); ?></td>
+                                                                    <!-- <td><?php // echo $position; ?></td> -->
                                                                     <td><?php echo $email; ?></td>
 
                                                                     <td>

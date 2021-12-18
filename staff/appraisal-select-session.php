@@ -5,7 +5,7 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>Staff Appraisal | Select Staff</title>
+        <title>Staff Appraisal | Select Fiscal Year</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="SDD-UBIDS Staff Appraisal" name="description" />
         <meta content="SDD-UBIDS" name="author" />
@@ -62,7 +62,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Staff Appraisal</a></li>
-                                            <li class="breadcrumb-item active">Select Staff</li>
+                                            <li class="breadcrumb-item active">Select Fiscal Year</li>
                                         </ol>
                                     </div>
 
@@ -77,8 +77,8 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">Select Staff</h4>
-                                        <p class="card-title-desc">Please select a staff to appraise.</p>
+                                        <h4 class="card-title">Select Fiscal Year</h4>
+                                        <p class="card-title-desc">Please select a fiscal year to appraise.</p>
                                     </div>
                                     <!-- end card header -->
 
@@ -87,20 +87,43 @@
                                             <!-- <h5 class="font-size-14 mb-3">Single select input Example</h5> -->
 
 
-                                            <form action="appraisal.php" method="post">
+                                            <form action="appraisal-select-staff.php" method="post">
 
 
                                                 <div class="row mb-5">
                                                     <div class="col-md-6">
                                                         <div class="">
-                                                            <label for="staff" class="form-label font-size-13 text-muted">Staff</label>
-                                                            <select class="form-control" data-trigger name="staff"
-                                                                id="choices-single-default"
-                                                                placeholder="Search">
-                                                                <option value="">Select Staff</option>
-                                                                <option value="Choice 1">Choice 1</option>
-                                                                <option value="Choice 2">Choice 2</option>
-                                                                <option value="Choice 3">Choice 3</option>
+                                                            <label for="staff" class="form-label font-size-13 text-muted">Fiscal Year</label>
+                                                            <select class="form-control form-select" name="fiscal_session_id" required>
+                                                                <option value="">Select Fiscal Year</option>
+
+                                                                <!-- get all open fiscal sessions and display -->
+                                                                <?php
+
+                                                                    $open_fiscal_sessions = select_all_where_desc_id("fiscal_sessions", "status", 1, "fiscal_session_id");
+
+                                                                    if(count($open_fiscal_sessions) > 0) {
+
+                                                                        $select_current_year = 1;
+
+                                                                        foreach ($open_fiscal_sessions as $fiscal_session) {
+                                                                            
+                                                                            $fiscal_session_id = $fiscal_session['fiscal_session_id'];
+                                                                            $fiscal_year = $fiscal_session['fiscal_year'];
+
+                                                                            ?>
+                                                                            
+                                                                            <option value="<?php echo $fiscal_session_id; ?>" <?php if($select_current_year == 1) {echo 'selected';} ?>><?php echo $fiscal_year; ?></option>
+                                                                            
+                                                                            
+                                                                            <?php
+                                                                            $select_current_year++;
+                                                                        }
+                                                                    }
+
+
+                                                                ?>
+
                                                             </select>
                                                         </div>
                                                         
@@ -112,7 +135,7 @@
 
                                                 <div class="row mb-5">
                                                     <div class="col-md-6">
-                                                        <button type="submit" class="btn btn-success w-md">Proceed <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                                        <button type="submit" name="appraise_fiscal_year" class="btn btn-success w-md">Proceed <i class="mdi mdi-arrow-right ms-1"></i></button>
                                                     </div>
 
                                                 </div>

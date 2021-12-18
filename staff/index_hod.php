@@ -12,6 +12,9 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="../assets/images/logo.png">
 
+         <!-- choices css -->
+         <link href="../assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
+
         <!-- preloader css -->
         <link rel="stylesheet" href="../assets/css/preloader.min.css" type="text/css" />
 
@@ -31,6 +34,142 @@
 
         <?php
             include "includes/header.inc.php";
+
+            // Check if signed in user is at the correct dashboard for his role
+
+            if($_SESSION['appraisal_role'] != "HOD") {
+                echo "<script>
+                        alert('You do no have access to this page. You will be redirected to the Dean dashboard');
+                        window.location.href='index_dean.php';
+                      </script>";
+                exit();
+            }
+
+            else {
+
+                $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+
+                if(count($last_fiscal_session) > 0) {
+
+                    // get details
+                    $user_role = $_SESSION['appraisal_role'];
+                    $user_department_id = $_SESSION['appraisal_sch_fac_dept_id'];
+
+                    // get department name
+                    $department_name = department_name($user_department_id);
+
+                    // get all staff lecturers belonging to this department
+                    $all_staff = select_all_where_and("staff", "role", "Lecturer", "sch_fac_dept_id", $user_department_id);
+
+                    $staff_ids_array = array();
+
+                    if(count($all_staff) > 0) {
+
+                        // get staff ids of each staff and store in array
+                        foreach ($all_staff as $staff) {
+
+                            $staff_id = $staff['staff_id'];
+
+                            // add staff id to staff ids array
+                            $staff_ids_array[] = $staff_id;
+                        }
+                    }
+
+                    
+
+                    // get numbers
+                    $total_no_of_staff = count($staff_ids_array);
+
+
+                    // get current/last fiscal session appraisal details
+                    $last_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+
+                    $last_fiscal_year = $last_fiscal_session[0]['fiscal_year'];
+                    $last_deadline = $last_fiscal_session[0]['deadline'];
+
+                    // determine arrow colors
+                    if(strtotime($last_deadline) < strtotime(date("Y-m-d"))) {
+                        $deadline_arrow_color = "danger";
+                    }
+                    else {
+                        $deadline_arrow_color = "success";
+                    }
+
+
+                    // get all appraisal for last fiscal session for all staffs here
+
+                    // create container to keep all appraisal grand means of all staff
+                    $grand_means_array = array();
+
+                    if(count($staff_ids_array) > 0) {
+
+                        // for each staff, get their appraisal grand means and store in grand means array
+                        foreach ($staff_ids_array as $picked_staff_id) {
+                            
+                            $staff_appraisal_result = select_all_where_and("appraisal", "staff_id", $picked_staff_id, "fiscal_session_id", $last_fiscal_session_id);
+
+                            if(count($staff_appraisal_result) > 0) {
+
+                                $staff_grand_mean = $staff_appraisal_result[0]['grand_mean'];
+                                $grand_means_array[] = $staff_grand_mean;
+                            }
+                        }
+
+                    }
+
+                    // get number of appraised and unappraised staff
+
+                    $no_of_appraised_staff = count($grand_means_array);
+                    $no_of_unappraised_staff = $total_no_of_staff - $no_of_appraised_staff;
+
+
+                    // get appraisal analysis results
+                    $analysis_results = analysis_results($grand_means_array);
+
+                    // get numbers of staffs appraised in this array format = (avg, good, poor)
+                    $no_of_staff_average = $analysis_results[0];
+                    $no_of_staff_good = $analysis_results[1];
+                    $no_of_staff_poor = $analysis_results[2];
+
+
+                    // get percentages of appraisal results
+                    $analysis_percentages = analysis_percentages($analysis_results);
+
+                    $percentage_staff_average = $analysis_percentages[0];
+                    $percentage_staff_good = $analysis_percentages[1];
+                    $percentage_staff_poor = $analysis_percentages[2];
+
+
+
+                    // calculate percentage progress of appraisal
+
+                    if($total_no_of_staff > 0) {
+
+                        $percentage_progress_of_appraisal = ($no_of_appraised_staff / $total_no_of_staff) * 100;
+                        $percentage_progress = round($percentage_progress_of_appraisal, 2);
+                    }
+                    else {
+                        $percentage_progress = 0;
+                    }
+
+                    
+                    
+
+
+
+                }
+
+                // if there is no last fiscal id, alert and redirect
+                else {
+
+                    echo "<script>
+                            alert('No Fiscal Sessions have been added/activated yet. Please check back later');
+                            window.location.href = '../logout.php';
+                        </script>";
+                    exit();
+                    
+                }
+            }
         ?>
 
 
@@ -52,8 +191,8 @@
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                            <li class="breadcrumb-item active">Dashboard</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);"><?php echo $user_role; ?></a></li>
+                                            <li class="breadcrumb-item active"><?php echo $department_name; ?></li>
                                         </ol>
                                     </div>
 
@@ -70,9 +209,9 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-6">
-                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">HODs</span>
+                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">Lecturers</span>
                                                 <h4 class="mb-3">
-                                                    <span class="counter-value" data-target="32">0</span>
+                                                    <span class="counter-value" data-target="<?php echo $total_no_of_staff; ?>">0</span>
                                                 </h4>
                                             </div>
         
@@ -81,8 +220,8 @@
                                             </div>
                                         </div>
                                         <div class="text-nowrap">
-                                            <span class="badge bg-soft-success text-success">FCIS</span>
-                                            <span class="ms-1 text-muted font-size-13">School/Faculty</span>
+                                            <span class="badge bg-soft-success text-success">Total</span>
+                                            <span class="ms-1 text-muted font-size-13">In Department</span>
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
@@ -95,9 +234,9 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-6">
-                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">Unappraised HODs</span>
+                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">Unappraised Lecturers</span>
                                                 <h4 class="mb-3">
-                                                    <span class="counter-value" data-target="15">0</span>
+                                                    <span class="counter-value" data-target="<?php echo $no_of_unappraised_staff; ?>">0</span>
                                                 </h4>
                                             </div>
                                             <div class="col-6">
@@ -119,9 +258,9 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-6">
-                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">Appraised HODs</span>
+                                                <span class="text-muted mb-3 lh-1 d-block text-truncate">Appraised Lecturers</span>
                                                 <h4 class="mb-3">
-                                                    <span class="counter-value" data-target="17">0</span>
+                                                    <span class="counter-value" data-target="<?php echo $no_of_appraised_staff; ?>">0</span>
                                                 </h4>
                                             </div>
                                             <div class="col-6">
@@ -145,7 +284,7 @@
                                             <div class="col-6">
                                                 <span class="text-muted mb-3 lh-1 d-block text-truncate">Progress</span>
                                                 <h4 class="mb-3">
-                                                    <span class="counter-value" data-target="12.57">0</span>%
+                                                    <span class="counter-value" data-target="<?php echo $percentage_progress; ?>">0</span>%
                                                 </h4>
                                             </div>
                                             <div class="col-6">
@@ -153,7 +292,7 @@
                                             </div>
                                         </div>
                                         <div class="text-nowrap">
-                                            <span class="badge bg-soft-success text-success">12.57%</span>
+                                            <span class="badge bg-soft-success text-success"><?php echo $percentage_progress; ?>%</span>
                                             <span class="ms-1 text-muted font-size-13">Completed</span>
                                         </div>
                                     </div><!-- end card body -->
@@ -195,17 +334,17 @@
                                                 <div class="mt-4 mt-sm-0">
                                                     <div>
                                                         <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2" style="color:#a8aada;"></i> Poor</p>
-                                                        <h6>8 HODs = <span class="text-muted font-size-14 fw-normal">25.0%</span></h6>
+                                                        <h6><?php echo $no_of_staff_poor; ?> Lecturers = <span class="text-muted font-size-14 fw-normal"><?php echo $percentage_staff_poor; ?>%</span></h6>
                                                     </div>
     
                                                     <div class="mt-4 pt-2">
                                                         <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2 text-primary"></i> Good</p>
-                                                        <h6>9 HODs = <span class="text-muted font-size-14 fw-normal">28.1%</span></h6>
+                                                        <h6><?php echo $no_of_staff_good; ?> Lecturers = <span class="text-muted font-size-14 fw-normal"><?php echo $percentage_staff_good; ?>%</span></h6>
                                                     </div>
     
                                                     <div class="mt-4 pt-2">
                                                         <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2" style="color:#777aca;"></i> Average</p>
-                                                        <h6>15 HODs = <span class="text-muted font-size-14 fw-normal">46.9%</span></h6>
+                                                        <h6><?php echo $no_of_staff_average; ?> Lecturers = <span class="text-muted font-size-14 fw-normal"><?php echo $percentage_staff_average; ?>%</span></h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -227,7 +366,7 @@
                                                     <h5 class="card-title me-2">Appraisals Submitted</h5>
                                                     <div class="ms-auto">
                                                         <select class="form-select form-select-sm">
-                                                            <option value="MAY" selected="">December</option>
+                                                            <option value="" selected="">Progress</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -239,27 +378,27 @@
                                                     <div class="col-sm align-self-center">
                                                         <div class="mt-4 mt-sm-0">
                                                             <p class="mb-1">Fiscal Year</p>
-                                                            <h4>2021/2022</h4>
+                                                            <h4><?php echo $last_fiscal_year; ?></h4>
 
-                                                            <p class="text-muted mb-4"> DEADLINE: 25 JAN 2021 <i class="mdi mdi-arrow-up ms-1 text-success"></i></p>
+                                                            <p class="text-muted mb-4"> DEADLINE: <?php echo strtoupper(date("d M Y", strtotime($last_deadline))); ?> <i class="mdi mdi-arrow-up ms-1 text-<?php echo $deadline_arrow_color; ?>"></i></p>
 
                                                             <div class="row g-0">
                                                                 <div class="col-6">
                                                                     <div>
                                                                         <p class="mb-2 text-muted text-uppercase font-size-11">Appraised</p>
-                                                                        <h5 class="fw-medium">17</h5>
+                                                                        <h5 class="fw-medium"><?php echo $no_of_appraised_staff; ?></h5>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <div>
                                                                         <p class="mb-2 text-muted text-uppercase font-size-11">Remaining</p>
-                                                                        <h5 class="fw-medium">15</h5>
+                                                                        <h5 class="fw-medium"><?php echo $no_of_unappraised_staff; ?></h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="mt-2">
-                                                                <a href="appraisal-select.php" class="btn btn-primary btn-sm">Appraisal <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                                                <a href="appraisal-select-session.php" class="btn btn-primary btn-sm">Appraisal <i class="mdi mdi-arrow-right ms-1"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -281,35 +420,86 @@
                                                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                                                     
                                                         <div>
-                                                            <div class="form-group mb-3">
-                                                                <label>Year :</label>
-                                                                <select class="form-select">
-                                                                    <option>2020/2021</option>
-                                                                    <option>2021/2022</option>
-                                                                </select>
-                                                            </div>
+                                                            <form action="appraisal-history-lecturer.php" method="post">
 
-                                                            <div class="form-group mb-3">
-                                                                <label>HOD :</label>
-                                                                <select class="form-select">
-                                                                    <option>Ahmed Issah</option>
-                                                                    <option>Jude Apana</option>
-                                                                </select>
-                                                            </div>
+                                                                <div class="form-group mb-3">
+                                                                    <label>Year :</label>
+                                                                    <select required class="form-select" name="year">
+                                                                        <option value="">Select fiscal year</option>
 
-                                                            
-        
+                                                                        <?php
 
-                                                            <div class="text-center mb-3">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-success w-md">Search by year only</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="text-center">
-                                                                <form action="search-results.php" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-primary w-md">Search by all fields</button>
-                                                                </form>
-                                                            </div>
+                                                                            // get all fiscal years
+                                                                            $fiscal_sessions = select_all_desc_id("fiscal_sessions", "fiscal_session_id");
+
+                                                                            if(count($fiscal_sessions) > 0) {
+
+                                                                                foreach ($fiscal_sessions as $fiscal_session) {
+                                                                                    
+                                                                                    $fiscal_session_id = $fiscal_session['fiscal_session_id'];
+                                                                                    $fiscal_year = $fiscal_session['fiscal_year'];
+
+                                                                                    ?>
+                                                                                    
+                                                                                    <option value="<?php echo $fiscal_session_id; ?>"><?php echo $fiscal_year; ?></option>
+                                                                                                
+                                                                                    
+                                                                                    <?php
+                                                                                }
+                                                                            }
+
+                                                                        ?>
+                                                                        
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group mb-3">
+                                                                    <label>Lecturer :</label>
+                                                                    <select data-trigger class="form-select" name="staff_id">
+                                                                        <option value="">Select Lecturer</option>
+                                                                        
+                                                                        <?php
+
+                                                                            // get all lecturers
+                                                                            $all_lecturers = select_all_where_asc_id("staff", "role", "Lecturer", "staff_name");
+
+
+                                                                            if(count($all_lecturers) > 0) {
+
+                                                                                foreach ($all_lecturers as $search_lecturer) {
+                                                                                    
+                                                                                    $lecturer_staff_id = $search_lecturer['staff_id'];
+                                                                                    $lecturer_staff_name = $search_lecturer['staff_name'];
+                                                                                    $lecturer_department_id = $search_lecturer['sch_fac_dept_id'];
+
+                                                                                    if($lecturer_department_id == $user_department_id) {
+
+                                                                                        ?>
+                                                                                        
+                                                                                        <option value="<?php echo $lecturer_staff_id; ?>"><?php echo $lecturer_staff_name; ?></option>
+                                                                                                    
+                                                                                        
+                                                                                        <?php
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                        ?>
+
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- submit button year only -->
+                                                                <div class="text-center mb-3">
+                                                                    <button type="submit" name="search_year_only" class="btn btn-sm btn-success w-md">Search by year only</button>
+                                                                </div>
+
+                                                                <!-- submit button all fields -->
+                                                                <div class="text-center">
+                                                                    <button type="submit" name="search_all_fields" class="btn btn-sm btn-primary w-md">Search by all fields</button>
+                                                                </div>
+
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     
@@ -357,6 +547,9 @@
         <!-- pace js -->
         <script src="../assets/libs/pace-js/pace.min.js"></script>
 
+        <!-- choices js -->
+        <script src="../assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
         <!-- apexcharts -->
         <script src="../assets/libs/apexcharts/apexcharts.min.js"></script>
 
@@ -366,6 +559,9 @@
         <!-- dashboard init -->
         <script src="../assets/js/pages/dashboard.init.js"></script>
 
+        <!-- init js -->
+       <script src="../assets/js/pages/form-advanced.init.js"></script>
+
 
 
 
@@ -374,9 +570,11 @@
         <script>
         
             // ASSESSMENT REPORT PIE CHART
+            // ASSESSMENT REPORT PIE CHART (avg, good, poor)
             var piechartColors = getChartColorsArray("#wallet-balance"),
                 options = {
-                    series: [32, 9, 17],
+                    // series: [32, 9, 17],
+                    series: [<?php echo $no_of_staff_average . ", " . $no_of_staff_good . ", " . $no_of_staff_poor; ?>],
                     chart: { width: 227, height: 227, type: "pie" },
                     labels: ["Average", "Good", "Poor"],
                     colors: piechartColors,
@@ -413,13 +611,27 @@
                     fill: { type: "gradient", gradient: { shade: "dark", type: "horizontal", gradientToColors: [radialchartColors[1]], shadeIntensity: 0.15, inverseColors: !1, opacityFrom: 1, opacityTo: 1, stops: [20, 60] } },
                     stroke: { dashArray: 4 },
                     legend: { show: !1 },
-                    series: [70],
+                    series: [<?php echo $percentage_progress; ?>],
                     labels: ["Series A"],
                 };
             (chart = new ApexCharts(document.querySelector("#invested-overview"), options)).render();
 
 
         </script>
+
+
+
+
+<style>
+    .choices[data-type*=select-one] > .choices__list > .choices__list > .choices__item--selectable
+{
+	padding-right: 0px;
+}
+.choices[data-type*=select-one] > .choices__list > .choices__list > .choices__item--selectable::after
+{
+	display: none;
+}
+</style>
 
 
 

@@ -2,7 +2,7 @@
     if(!isset($_GET['id']) || empty($_GET['id'])) {
 
         echo "<script>
-                    alert('Error... Please select an appraisal result');
+                    alert('No appraisal result found for your selection');
                     window.location.href = 'dashboard.php';
               </script>";
         exit();

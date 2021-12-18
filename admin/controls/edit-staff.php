@@ -85,12 +85,12 @@ if(isset($_POST['edit-staff'])) {
 
 
         // update details
-        $sql = "UPDATE staff SET staff_id_no=?, title=?, sch_fac_dept_id=?, position=?, email=? WHERE staff_id=?";
+        $sql = "UPDATE staff SET staff_id_no=?, title=?, staff_name=?, sch_fac_dept_id=?, position=?, email=? WHERE staff_id=?";
 
         // pdo query
         $stmt = $pdo->prepare($sql);
 
-        if($stmt->execute([$staff_id_no, $title, $sch_fac_dept_id, $position, $email, $staff_id])) {
+        if($stmt->execute([$staff_id_no, $title, $staff_name, $sch_fac_dept_id, $position, $email, $staff_id])) {
 
             switch ($role) {
                 case "Dean":

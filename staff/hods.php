@@ -110,7 +110,7 @@
                                                             </div>
                                                         </td>
                                                         
-                                                        <td><a href="javascript: void(0);" class="text-dark fw-medium">#MN0215</a> </td>
+                                                        <td><span class="text-dark fw-medium">#MN0215</span> </td>
                                                         <td>Dr. Ophelius Yinyeh</td>
                                                         
                                                         <td>

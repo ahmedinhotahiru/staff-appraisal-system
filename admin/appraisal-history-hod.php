@@ -44,10 +44,45 @@
 
             // if there is no search year, get the last fiscal year
             if(!isset($_POST['year']) || empty($_POST['year'])) {
-                $search_fiscal_session_id = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1)[0]['fiscal_session_id'];
+                $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+
+                if(count($last_fiscal_session) > 0) {
+                    $search_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+                    
+                }
+                else {
+                    echo "<script>
+                            alert('No Fiscal Session found. Please add a fiscal session');
+                            
+                        </script>";
+                }
+                
+
+
             }
             else {
                 $search_fiscal_session_id = trim($_POST['year']);
+            }
+
+
+
+
+            // staff APPRAISAL RESULT search
+            if(isset($_POST['search_all_fields'])) {
+                if(isset($_POST['staff_id'])  && !empty($_POST['staff_id'])) {
+
+                    $search_staff_id = trim($_POST['staff_id']);
+                    
+                    // search for appraisal result id using fiscal_session_id and staff_id
+                    $search_appraisal_id = select_all_where_and("appraisal", "staff_id", $search_staff_id, "fiscal_session_id", $search_fiscal_session_id)[0]['appraisal_id'];
+
+                    // redirect to appraisal result detail with appraisal id
+                    
+                    echo "<script>
+                            window.location.href='appraisal-result-detail.php?id=$search_appraisal_id';
+                        </script>";
+                        
+                }
             }
             
         ?>
@@ -141,6 +176,7 @@
                                                         <th style="width: 120px;">Staff ID</th>
                                                         <th style="width: 150px;">Staff Name</th>
                                                         <th>Department</th>
+                                                        <th>School/Faculty</th>
                                                         <th>Total Score</th>
                                                         <th>Grand Mean</th>
                                                         <th>Remark</th>
@@ -176,6 +212,9 @@
 
                                                                     $department_name = select_all_where("departments", "department_id", $department_id)[0]['department_name'];
 
+                                                                    $department_school_faculty_id = department_school_faculty_id($department_id);
+    
+
                                                                     $total_score = $result['total_score'];
                                                                     $grand_mean = $result['grand_mean'];
                                                                     $remarks = $result['remarks'];
@@ -207,9 +246,11 @@
                                                                             </div>
                                                                         </td>
                                                                         
-                                                                        <td><a href="javascript: void(0);" class="text-dark fw-medium"><?php echo $staff_id_no; ?></a> </td>
+                                                                        <td><span class="text-dark fw-medium"><?php echo $staff_id_no; ?></span> </td>
                                                                         <td><?php echo $staff_name; ?></td>
                                                                         <td><?php echo $department_name; ?></td>
+                                                                        <td><?php echo school_faculty_acronym($department_school_faculty_id); ?></td>
+    
                                                                         <td><?php echo $total_score; ?></td>
                                                                         <td>
                                                                             <div class="badge badge-soft-<?php echo $grand_mean_color; ?> font-size-12"><?php echo $grand_mean; ?></div>

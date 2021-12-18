@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2021 at 12:35 PM
+-- Generation Time: Dec 18, 2021 at 03:55 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `email`, `username`, `password`) VALUES
-(1, 'issahahmed00@gmail.com', 'admin', '$2y$10$FQxmAlIhTHBIHP7cBqda0e720KD1d8Kr85Le/PHtAUuQGYgTTY7CW');
+(1, 'issahahmed00@gmail.com', 'admin', '$2y$10$BnTvbQ93Se0ANhOkGHgBH.JiN4zEorn/kGPNQxqg2kgwOLE2pmZV6');
 
 -- --------------------------------------------------------
 
@@ -68,10 +68,10 @@ INSERT INTO `appraisal` (`appraisal_id`, `staff_id`, `department_id`, `fiscal_se
 (2, 14, 15, 5, 20, 1.96, 'Poor', 'This is a poor performance. Staff must sit up'),
 (3, 15, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
 (4, 13, 3, 5, 36, 3.67, 'Good', 'This is a good performance'),
-(5, 16, 3, 5, 36, 3.67, 'Good', 'This is a good performance'),
+(5, 16, 15, 5, 36, 3.67, 'Good', 'This is a good performance'),
 (6, 17, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
-(7, 19, 15, 5, 20, 1.96, 'Poor', 'This is a poor performance. Staff must sit up'),
-(8, 20, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
+(7, 19, 3, 5, 20, 1.96, 'Poor', 'This is a poor performance. Staff must sit up'),
+(8, 20, 15, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
 (9, 21, 3, 5, 36, 3.67, 'Good', 'This is a good performance'),
 (10, 23, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.');
 
@@ -130,7 +130,9 @@ CREATE TABLE `departments` (
 
 INSERT INTO `departments` (`department_id`, `department_name`, `school_faculty_id`) VALUES
 (3, 'Department Of Real Estate Development', 8),
-(15, 'Department Of Social Development', 2);
+(15, 'Department Of Social Development', 2),
+(16, 'Department Of Computer Science', 2),
+(17, 'Department Of Business', 9);
 
 -- --------------------------------------------------------
 
@@ -150,9 +152,23 @@ CREATE TABLE `fiscal_sessions` (
 --
 
 INSERT INTO `fiscal_sessions` (`fiscal_session_id`, `fiscal_year`, `deadline`, `status`) VALUES
-(1, '2022', '2022-01-20', 1),
-(4, '2023/2024', '2021-12-29', 1),
-(5, '2020/2021', '2021-12-22', 1);
+(1, '2018/2019', '2022-01-20', 1),
+(4, '2019/2020', '2021-12-29', 2),
+(5, '2020/2021', '2021-12-24', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resetpassword`
+--
+
+CREATE TABLE `resetpassword` (
+  `id` int(11) NOT NULL,
+  `pwdResetEmail` text NOT NULL,
+  `pwdResetSelector` text NOT NULL,
+  `pwdResetToken` longtext NOT NULL,
+  `pwdResetExpires` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -172,7 +188,8 @@ CREATE TABLE `schools_faculties` (
 
 INSERT INTO `schools_faculties` (`school_faculty_id`, `school_faculty_name`, `acronym`) VALUES
 (2, 'School Of Computing And Information Sciences', 'SCIS'),
-(8, 'Faculty Of Integrated Development Studies', 'FIDS');
+(8, 'Faculty Of Integrated Development Studies', 'FIDS'),
+(9, 'School Of Business', 'SOB');
 
 -- --------------------------------------------------------
 
@@ -196,19 +213,22 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staff_id`, `staff_id_no`, `title`, `staff_name`, `sch_fac_dept_id`, `role`, `position`, `email`) VALUES
-(11, 'UBIDS47447', 'Dr.', 'Ahmed Issah Tahiru', 2, 'Dean', 'Senior Lecturer', 'issahahmed00@gmail.com'),
 (12, 'UBIDS887775', 'Prof.', 'Ophelius Yinyeh', 8, 'Dean', 'Exams Officer', 'ahmedissah419@yahoo.com'),
 (13, 'UBIDS155454', 'Mrs.', 'Paula Nyame', 3, 'HOD', 'Senior Lecturer', 'ahmedinhonasheeds@gmail.com'),
 (14, 'UBIDS55688', 'Dr.', 'Nabita Teye', 15, 'HOD', 'Exams Officer', 'ahmedissah4190@gmail.com'),
 (15, 'UBIDS68796', 'Mr.', 'Mumin Abdallah', 3, 'Lecturer', 'Junior Lecturer', 'ahmedissah419@gmail.com'),
 (16, 'UBIDS56878', 'Ms.', 'Matilda Nii', 15, 'HOD', 'Lecturer', 'matilda@gmail.com'),
 (17, 'UBIDS56578', 'Dr.', 'Sampson Abogoba', 3, 'HOD', 'Assistant Exam Officer', 'sampson@gmail.com'),
-(18, 'UBIDS68765', 'Prof.', 'Jude Apana Richlove', 15, 'HOD', 'It Guy', 'judeapana@yahoo.com'),
+(18, 'UBIDS68765', 'Prof.', 'Jude Apana Richlove', 15, 'HOD', 'It Guy 2', 'judeapana@gmail.com'),
 (19, 'UBIDS85678', 'Mr.', 'Nuhu Laah', 3, 'Lecturer', 'Lecturer', 'nuhulaar@gmail.com'),
 (20, 'UBIDS32158', 'Mrs.', 'Gloria Amanfi', 15, 'Lecturer', 'Senior Lecturer', 'glorryy@yahoo.com'),
 (21, 'UBIDS54785', 'Prof.', 'Daabo Nkrumah', 3, 'Lecturer', 'Liberian', 'dopi@yahoo.com'),
 (22, 'UBIDS63254', 'Prof.', 'Mahmood Bawumia', 15, 'Lecturer', 'Senior Lecturer', 'mahmoud@gmail.com'),
-(23, 'UBIDS98546', 'Ms.', 'Rodalyn Quaye', 3, 'Lecturer', 'Lecturer', 'roqu@gmail.com');
+(23, 'UBIDS98546', 'Ms.', 'Rodalyn Quaye', 3, 'Lecturer', 'Lecturer', 'roqu@gmail.com'),
+(24, 'UBIDS36487', 'Prof.', 'Daabo Ibrahim', 2, 'Dean', 'Senior Lecturer', 'issahahmed@gmail.com'),
+(25, 'UBIDS24589', 'Prof.', 'Edward Baagyere', 16, 'HOD', 'Senior Lecturer', 'ahmedinhonasheedsmedia@gmail.com'),
+(26, 'UBIDS65879', 'Dr.', 'Wisdom Nagaye', 9, 'Dean', 'Senior Lecturer', 'issahahmed00dff@gmail.com'),
+(27, 'UBIDS54789', 'Prof.', 'Ophelius Yinyeh', 9, 'Dean', 'Director Ict', 'ophelius24@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -228,13 +248,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `staff_id`, `staff_id_no`, `password`) VALUES
-(9, 11, 'UBIDS47447', '$2y$10$pLPdbORNeIqN5qBj7S34geQ4ySIqXc/QJmTlb9zcvCTljQVWMPjZu'),
-(10, 12, 'UBIDS887775', '$2y$10$sYQeQVNxs/.hNBav1Dcnx.ZWdpTubhq7gdfkre53o0K1FftujmTsu'),
+(10, 12, 'UBIDS887775', '$2y$10$S00BbqhGKfe3.cyKDTpTduYkEhxCGTP/r4CmirJ.IJfHWbeZhdwbq'),
 (11, 13, 'UBIDS155454', '$2y$10$BKkjWey2KgycovXaXNr7L.49r/n8HCm04uGUSb3L6Vtr6WbP5uy1e'),
 (12, 14, 'UBIDS55688', '$2y$10$4dCxzv3ViMVp00bJLxss/uLBYgIvb08ao4m7FJg7QOvKiSUT2ILn.'),
 (13, 16, 'UBIDS56878', '$2y$10$kPhqs.BvJKUNMKKU3iFiNezw9JYZys266PX09m2b8VkAWSkD9GGda'),
-(14, 17, 'UBIDS56578', '$2y$10$HpoiPxl1bDnVvr0G6DLvke5W2..R.XC1fEIAxdS7sFoKhLEwrjNnO'),
-(15, 18, 'UBIDS68765', '$2y$10$uNaUZDpDdnoAuF1yhH227eUau91I7NomOk1zS5w1LguNVd3pDk4LK');
+(14, 17, 'UBIDS56578', '$2y$10$K9JYNjmpOYRY81HJv9hWquixqoM0VQ37VX6FIzQ/vtiMoHshhNLYS'),
+(15, 18, 'UBIDS68765', '$2y$10$HkcfvWw/vhY2tmZACnCFBuwGR3k51pBpb5ojbTM5JtFZ5ATPqBi5O'),
+(16, 24, 'UBIDS36487', '$2y$10$fxOjBVNoaqXa.Bb.9x5oaOsLzx5aOqfNYm5jODUM3nl.O9Og41sRC'),
+(17, 25, 'UBIDS24589', '$2y$10$HkcfvWw/vhY2tmZACnCFBuwGR3k51pBpb5ojbTM5JtFZ5ATPqBi5O'),
+(18, 26, 'UBIDS65879', '$2y$10$1xiPN75t4vSWaDD1FImdbuWzewknr1hi60f64vWLGdVe1/rWsDbre'),
+(19, 27, 'UBIDS54789', '$2y$10$TuhdlrqPoQpd9q741VT08OQZMirVeL6y1jjnZZWHncerGfyZtaSQi');
 
 --
 -- Indexes for dumped tables
@@ -269,6 +292,12 @@ ALTER TABLE `departments`
 --
 ALTER TABLE `fiscal_sessions`
   ADD PRIMARY KEY (`fiscal_session_id`);
+
+--
+-- Indexes for table `resetpassword`
+--
+ALTER TABLE `resetpassword`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `schools_faculties`
@@ -314,7 +343,7 @@ ALTER TABLE `appraisal_details`
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `fiscal_sessions`
@@ -323,22 +352,28 @@ ALTER TABLE `fiscal_sessions`
   MODIFY `fiscal_session_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `resetpassword`
+--
+ALTER TABLE `resetpassword`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `schools_faculties`
 --
 ALTER TABLE `schools_faculties`
-  MODIFY `school_faculty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `school_faculty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

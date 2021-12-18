@@ -224,7 +224,7 @@
                                                                         </div>
                                                                     </td>
                                                                     
-                                                                    <td><a href="javascript: void(0);" class="text-dark fw-medium"><?php echo $staff_id_no; ?></a> </td>
+                                                                    <td><span class="text-dark fw-medium"><?php echo $staff_id_no; ?></span> </td>
 
                                                                     <td><?php echo $title . " " . $staff_name; ?></td>
                                                                     <td><?php echo school_faculty_name($sch_fac_dept_id); ?></td>

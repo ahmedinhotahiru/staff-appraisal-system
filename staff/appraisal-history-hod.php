@@ -6,7 +6,7 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>Admin | Appraisal History</title>
+        <title>Appraisal History HODs | Results</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="SDD-UBIDS Staff Appraisal" name="description" />
         <meta content="SDD-UBIDS" name="author" />
@@ -40,45 +40,63 @@
         <?php
             include "includes/header.inc.php";
 
-            $search_fiscal_session_id = 0;
+            // Check if signed in user is at the correct dashboard for his role
 
-            // if there is no search year, get the last fiscal year
-            if(!isset($_POST['year']) || empty($_POST['year'])) {
-                $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+            if($_SESSION['appraisal_role'] != "Dean") {
+                echo "<script>
+                        alert('You do no have access to this page. You will be redirected to the HOD dashboard');
+                        window.location.href='index_hod.php';
+                      </script>";
+                exit();
+                // header("Location: index_2.php");
+            }
 
-                if(count($last_fiscal_session) > 0) {
-                    $search_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+            else {
+
+
+                $search_fiscal_session_id = 0;
+
+                // if there is no search year, get the last fiscal year
+                if(!isset($_POST['year']) || empty($_POST['year'])) {
+                    $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+
+                    if(count($last_fiscal_session) > 0) {
+                        $search_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+                        
+                    }
+                    else {
+                        echo "<script>
+                                alert('No Fiscal Session found. Please add a fiscal session');
+                                
+                            </script>";
+                    }
                     
+
+
                 }
                 else {
-                    echo "<script>
-                            alert('No Fiscal Session found. Please add a fiscal session');
-                            
-                        </script>";
+                    $search_fiscal_session_id = trim($_POST['year']);
                 }
-                
-            }
-            else {
-                $search_fiscal_session_id = trim($_POST['year']);
-            }
 
 
 
-            // staff APPRAISAL RESULT search
-            if(isset($_POST['search_all_fields'])) {
-                if(isset($_POST['staff_id'])  && !empty($_POST['staff_id'])) {
 
-                    $search_staff_id = trim($_POST['staff_id']);
-                    
-                    // search for appraisal result id using fiscal_session_id and staff_id
-                    $search_appraisal_id = select_all_where_and("appraisal", "staff_id", $search_staff_id, "fiscal_session_id", $search_fiscal_session_id)[0]['appraisal_id'];
+                // staff APPRAISAL RESULT search
+                if(isset($_POST['search_all_fields'])) {
+                    if(isset($_POST['staff_id'])  && !empty($_POST['staff_id'])) {
 
-                    // redirect to appraisal result detail with appraisal id
-                    
-                    echo "<script>
-                            window.location.href='appraisal-result-detail.php?id=$search_appraisal_id';
-                        </script>";
+                        $search_staff_id = trim($_POST['staff_id']);
                         
+                        // search for appraisal result id using fiscal_session_id and staff_id
+                        $search_appraisal_id = select_all_where_and("appraisal", "staff_id", $search_staff_id, "fiscal_session_id", $search_fiscal_session_id)[0]['appraisal_id'];
+
+                        // redirect to appraisal result detail with appraisal id
+                        
+                        echo "<script>
+                                window.location.href='appraisal-result-detail.php?id=$search_appraisal_id';
+                            </script>";
+                            
+                    }
                 }
             }
             
@@ -95,7 +113,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Lecturers Appraisal Results - <?php echo fiscal_year($search_fiscal_session_id); ?></h4>
+                                    <h4 class="mb-sm-0 font-size-18">HODs Appraisal Results - <?php echo fiscal_year($search_fiscal_session_id); ?></h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -117,13 +135,13 @@
                                             <div class="col-sm">
                                                 <div class="mb-4">
                                                     <h4 class="card-title"><?php echo fiscal_year($search_fiscal_session_id); ?> Fiscal Year</h4>
-                                                    <p class="card-title-desc">Lecturers Appraisal Results.</p>
+                                                    <p class="card-title-desc">HODs Appraisal Results.</p>
 
                                                 </div>
                                             </div>
                                             <div class="col-sm-auto">
                                                 <div class="d-flex align-items-center gap-1 mb-4">
-                                                    <form action="appraisal-history-lecturer.php" method="post">
+                                                    <form action="appraisal-history-hod.php" method="post">
                                                         <div class="input-group datepicker-range">
                                                             <select name="year" required class="form-control form-select">
                                                                 <option value="">Select fiscal year</option>
@@ -184,7 +202,7 @@
 
 
 
-                                                    <!-- get all lecturer appraisal results for specified year -->
+                                                    <!-- get all HOD appraisal results for specified year -->
                                                     <?php
 
                                                         $appraisal_results = select_all_where("appraisal", "fiscal_session_id", $search_fiscal_session_id);
@@ -193,77 +211,91 @@
 
                                                             foreach ($appraisal_results as $result) {
 
-                                                                // identify staff and select
-                                                                $staff_id = $result['staff_id'];
-                                                                $select_staff = select_all_where("staff", "staff_id", $staff_id);
+                                                                // check if result belongs to same school as user logged in
 
-                                                                // check staff role if its dean
-                                                                $role = $select_staff[0]['role'];
+                                                                // first, get the department id
+                                                                $staff_department_id = $result['department_id'];
 
-                                                                if($role == "Lecturer") {
+                                                                // use department id to check the school it belongs to
+                                                                $staff_school_id = department_school_faculty_id($staff_department_id);
 
-                                                                    $appraisal_id = $result['appraisal_id'];
-                                                                    $staff_id_no = $select_staff[0]['staff_id_no'];
-                                                                    $staff_name = $select_staff[0]['staff_name'];
-                                                                    $department_id = $result['department_id'];
+                                                                if($staff_school_id == $_SESSION['appraisal_sch_fac_dept_id']) {
 
-                                                                    $department_name = select_all_where("departments", "department_id", $department_id)[0]['department_name'];
+                                                                
 
-                                                                    $department_school_faculty_id = department_school_faculty_id($department_id);
+                                                                    // identify staff and select
+                                                                    $staff_id = $result['staff_id'];
+                                                                    $select_staff = select_all_where("staff", "staff_id", $staff_id);
+
+                                                                    // check staff role if its dean
+                                                                    $role = $select_staff[0]['role'];
+
+                                                                    if($role == "HOD") {
+
+                                                                        $appraisal_id = $result['appraisal_id'];
+                                                                        $staff_id_no = $select_staff[0]['staff_id_no'];
+                                                                        $staff_name = $select_staff[0]['staff_name'];
+                                                                        $department_id = $result['department_id'];
+
+                                                                        $department_name = select_all_where("departments", "department_id", $department_id)[0]['department_name'];
+
+                                                                        $department_school_faculty_id = department_school_faculty_id($department_id);
+        
+
+                                                                        $total_score = $result['total_score'];
+                                                                        $grand_mean = $result['grand_mean'];
+                                                                        $remarks = $result['remarks'];
+
+                                                                        $grand_mean_color = "";
+                                                                        switch ($grand_mean) {
+                                                                            case $grand_mean >= 3:
+                                                                                $grand_mean_color = "success";
+                                                                                break;
+
+                                                                            case $grand_mean < 2:
+                                                                                $grand_mean_color = "danger";
+                                                                                break;
+                                                                            
+                                                                            default:
+                                                                                $grand_mean_color = "secondary";
+                                                                                break;
+                                                                        }
+
+                                                                        // display result details
+                                                                        ?>
 
 
-                                                                    $total_score = $result['total_score'];
-                                                                    $grand_mean = $result['grand_mean'];
-                                                                    $remarks = $result['remarks'];
-
-                                                                    $grand_mean_color = "";
-                                                                    switch ($grand_mean) {
-                                                                        case $grand_mean >= 3:
-                                                                            $grand_mean_color = "success";
-                                                                            break;
-
-                                                                        case $grand_mean < 2:
-                                                                            $grand_mean_color = "danger";
-                                                                            break;
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div class="form-check font-size-16">
+                                                                                    <input type="checkbox" class="form-check-input">
+                                                                                    <label class="form-check-label"></label>
+                                                                                </div>
+                                                                            </td>
+                                                                            
+                                                                            <td><span class="text-dark fw-medium"><?php echo $staff_id_no; ?></span> </td>
+                                                                            <td><?php echo $staff_name; ?></td>
+                                                                            <td><?php echo $department_name; ?></td>
+                                                                            <td><?php echo school_faculty_acronym($department_school_faculty_id); ?></td>
+        
+                                                                            <td><?php echo $total_score; ?></td>
+                                                                            <td>
+                                                                                <div class="badge badge-soft-<?php echo $grand_mean_color; ?> font-size-12"><?php echo $grand_mean; ?></div>
+                                                                            </td>
+                                                                            <td><?php echo $remarks; ?></td>
+                                                                            
+                                                                            <td>
+                                                                                <a class="" href="appraisal-result-detail.php?id=<?php echo $appraisal_id; ?>">View <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                                                            </td>
+                                                                        </tr>
                                                                         
-                                                                        default:
-                                                                            $grand_mean_color = "secondary";
-                                                                            break;
+                                                                        
+                                                                        
+                                                                        <?php
+
+                                                                        
+
                                                                     }
-
-                                                                    // display result details
-                                                                    ?>
-
-
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="form-check font-size-16">
-                                                                                <input type="checkbox" class="form-check-input">
-                                                                                <label class="form-check-label"></label>
-                                                                            </div>
-                                                                        </td>
-                                                                        
-                                                                        <td><span class="text-dark fw-medium"><?php echo $staff_id_no; ?></span> </td>
-                                                                        <td><?php echo $staff_name; ?></td>
-                                                                        <td><?php echo $department_name; ?></td>
-                                                                        <td><?php echo school_faculty_acronym($department_school_faculty_id); ?></td>
-
-                                                                        <td><?php echo $total_score; ?></td>
-                                                                        <td>
-                                                                            <div class="badge badge-soft-<?php echo $grand_mean_color; ?> font-size-12"><?php echo $grand_mean; ?></div>
-                                                                        </td>
-                                                                        <td><?php echo $remarks; ?></td>
-                                                                        
-                                                                        <td>
-                                                                            <a class="" href="appraisal-result-detail.php?id=<?php echo $appraisal_id; ?>">View <i class="mdi mdi-arrow-right ms-1"></i></a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    
-                                                                    
-                                                                    
-                                                                    <?php
-
-                                                                    
 
                                                                 }
                                                                 

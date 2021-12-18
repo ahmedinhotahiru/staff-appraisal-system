@@ -28,7 +28,7 @@ if(isset($_POST['login'])) {
                 
                 // verify password
                 foreach ($users as $user) {
-                    $verified = $user['verified'];
+                    // $verified = $user['verified'];
                     $hashedPassword = $user['password'];
 
                     $verify_password = password_verify($password, $hashedPassword);

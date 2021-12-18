@@ -6,7 +6,7 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>Admin | Appraisal History</title>
+        <title>Appraisal History Lecturers | Results</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="SDD-UBIDS Staff Appraisal" name="description" />
         <meta content="SDD-UBIDS" name="author" />
@@ -40,45 +40,59 @@
         <?php
             include "includes/header.inc.php";
 
-            $search_fiscal_session_id = 0;
+            // Check if signed in user is at the correct dashboard for his role
 
-            // if there is no search year, get the last fiscal year
-            if(!isset($_POST['year']) || empty($_POST['year'])) {
-                $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+            if($_SESSION['appraisal_role'] != "HOD") {
+                echo "<script>
+                        alert('You do no have access to this page. You will be redirected to the Dean dashboard');
+                        window.location.href='index_dean.php';
+                      </script>";
+                exit();
+            }
+            else {
 
-                if(count($last_fiscal_session) > 0) {
-                    $search_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+            
+
+                $search_fiscal_session_id = 0;
+
+                // if there is no search year, get the last fiscal year
+                if(!isset($_POST['year']) || empty($_POST['year'])) {
+                    $last_fiscal_session = select_all_desc_id_limit("fiscal_sessions", "fiscal_session_id", 1);
+
+                    if(count($last_fiscal_session) > 0) {
+                        $search_fiscal_session_id = $last_fiscal_session[0]['fiscal_session_id'];
+                        
+                    }
+                    else {
+                        echo "<script>
+                                alert('No Fiscal Session found. Please add a fiscal session');
+                                
+                            </script>";
+                    }
                     
                 }
                 else {
-                    echo "<script>
-                            alert('No Fiscal Session found. Please add a fiscal session');
-                            
-                        </script>";
+                    $search_fiscal_session_id = trim($_POST['year']);
                 }
-                
-            }
-            else {
-                $search_fiscal_session_id = trim($_POST['year']);
-            }
 
 
 
-            // staff APPRAISAL RESULT search
-            if(isset($_POST['search_all_fields'])) {
-                if(isset($_POST['staff_id'])  && !empty($_POST['staff_id'])) {
+                // staff APPRAISAL RESULT search
+                if(isset($_POST['search_all_fields'])) {
+                    if(isset($_POST['staff_id'])  && !empty($_POST['staff_id'])) {
 
-                    $search_staff_id = trim($_POST['staff_id']);
-                    
-                    // search for appraisal result id using fiscal_session_id and staff_id
-                    $search_appraisal_id = select_all_where_and("appraisal", "staff_id", $search_staff_id, "fiscal_session_id", $search_fiscal_session_id)[0]['appraisal_id'];
-
-                    // redirect to appraisal result detail with appraisal id
-                    
-                    echo "<script>
-                            window.location.href='appraisal-result-detail.php?id=$search_appraisal_id';
-                        </script>";
+                        $search_staff_id = trim($_POST['staff_id']);
                         
+                        // search for appraisal result id using fiscal_session_id and staff_id
+                        $search_appraisal_id = select_all_where_and("appraisal", "staff_id", $search_staff_id, "fiscal_session_id", $search_fiscal_session_id)[0]['appraisal_id'];
+
+                        // redirect to appraisal result detail with appraisal id
+                        
+                        echo "<script>
+                                window.location.href='appraisal-result-detail.php?id=$search_appraisal_id';
+                            </script>";
+                            
+                    }
                 }
             }
             
@@ -187,7 +201,9 @@
                                                     <!-- get all lecturer appraisal results for specified year -->
                                                     <?php
 
-                                                        $appraisal_results = select_all_where("appraisal", "fiscal_session_id", $search_fiscal_session_id);
+                                                        // $appraisal_results = select_all_where("appraisal", "fiscal_session_id", $search_fiscal_session_id);
+
+                                                        $appraisal_results = select_all_where_and("appraisal", "fiscal_session_id", $search_fiscal_session_id, "department_id", $_SESSION['appraisal_sch_fac_dept_id']);
 
                                                         if(count($appraisal_results) > 0) {
 

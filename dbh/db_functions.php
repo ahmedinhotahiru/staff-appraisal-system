@@ -26,7 +26,6 @@ function no_of_rows($table) {
 function no_of_rows_where($table, $where_field, $where_keyword) {
 
     global $pdo;
-    global $court_id;
 
 
     $sql = "SELECT * FROM $table WHERE $where_field = ?";
@@ -41,10 +40,26 @@ function no_of_rows_where($table, $where_field, $where_keyword) {
 
 
 
+function no_of_rows_where_and($table, $where_field, $where_keyword, $where_field_2, $where_keyword_2) {
+
+    global $pdo;
+
+
+    $sql = "SELECT * FROM $table WHERE $where_field = ? AND $where_field_2 = ?";
+
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$where_keyword, $where_keyword_2]);
+    $no_of_rows = count($stmt->fetchAll());
+
+    return $no_of_rows;
+}
+
+
+
 function select_all($table) {
 
     global $pdo;
-    global $court_id;
 
 
     $sql = "SELECT * FROM $table";
@@ -104,6 +119,23 @@ function select_all_where($table_name, $where_field, $where_keyword) {
     // pdo query
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$where_keyword]);
+    $result = $stmt->fetchAll();
+    
+
+    return $result;
+}
+
+
+
+function select_all_where_and($table_name, $where_field, $where_keyword, $where_field_2, $where_keyword_2) {
+    global $pdo;
+    
+
+    $sql = "SELECT * FROM $table_name WHERE $where_field = ? AND $where_field_2 = ?";
+
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$where_keyword, $where_keyword_2]);
     $result = $stmt->fetchAll();
     
 
@@ -242,6 +274,44 @@ function department_name($department_id) {
 
 
 
+function department_school_faculty_id($department_id) {
+    global $pdo;
+    
+
+
+    $sql = "SELECT * FROM departments WHERE department_id=?";
+    
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$department_id]);
+
+    $result = $stmt->fetchAll();
+    
+
+    return $result[0]['school_faculty_id'];
+}
+
+
+
+function staff_department_id($staff_id) {
+    global $pdo;
+    
+
+
+    $sql = "SELECT * FROM staff WHERE staff_id=?";
+    
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$staff_id]);
+
+    $result = $stmt->fetchAll();
+    
+
+    return $result[0]['sch_fac_dept_id'];
+}
+
+
+
 function school_faculty_name($school_faculty_id) {
     global $pdo;
     
@@ -304,6 +374,33 @@ function fiscal_year($fiscal_session_id) {
 
 
 
+function staff_is_appraised($staff_id, $fiscal_session_id) {
+    global $pdo;
+    
+
+
+    $sql = "SELECT * FROM appraisal WHERE staff_id = ? AND fiscal_session_id=?";
+    
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$staff_id, $fiscal_session_id]);
+
+    $result = $stmt->fetchAll();
+    
+    if(count($result) > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+    
+}
+
+
+
+
+
+
 
 
 
@@ -357,17 +454,23 @@ function analysis_percentages($analysis_results) {
 
     $total_results = $average_results + $good_results + $poor_results;
 
-    // compute percentages
-    $percentage_average = ($average_results / $total_results) * 100;
-    $percentage_good = ($good_results / $total_results) * 100;
-    $percentage_poor = ($poor_results / $total_results) * 100;
+    if($total_results > 0) {
 
-    $percentage_average_round = round($percentage_average, 1);
-    $percentage_good_round = round($percentage_good, 1);
-    $percentage_poor_round = round($percentage_poor, 1);
+        // compute percentages
+        $percentage_average = ($average_results / $total_results) * 100;
+        $percentage_good = ($good_results / $total_results) * 100;
+        $percentage_poor = ($poor_results / $total_results) * 100;
 
-    // return array($percentage_average, $percentage_good, $percentage_poor);
-    return array($percentage_average_round, $percentage_good_round, $percentage_poor_round);
+        $percentage_average_round = round($percentage_average, 1);
+        $percentage_good_round = round($percentage_good, 1);
+        $percentage_poor_round = round($percentage_poor, 1);
+
+        // return array($percentage_average, $percentage_good, $percentage_poor);
+        return array($percentage_average_round, $percentage_good_round, $percentage_poor_round);
+    }
+    else {
+        return array(0, 0, 0);
+    }
 }
 
 

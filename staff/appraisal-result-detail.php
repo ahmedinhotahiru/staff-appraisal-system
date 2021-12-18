@@ -1,3 +1,32 @@
+<?php
+    if(!isset($_GET['id']) || empty($_GET['id'])) {
+
+        
+        echo "<script>
+                    alert('No appraisal result found for your selection');
+                    history.back();
+              </script>";
+        exit();
+    }
+    else {
+
+        // check staff id
+        $id = trim($_GET['id']);
+
+        if(!preg_match("/^[0-9]+$/", $id)) {
+            echo "<script>
+                    alert('Error... Invalid appraisal result id');
+                    window.location.href = 'dashboard.php';
+                </script>";
+            exit();
+
+        }
+        
+    }
+
+    
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -6,7 +35,7 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>Staff Appraisal | Appraisal Result Detail</title>
+        <title>Result | Appraisal Result Detail</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="SDD-UBIDS Staff Appraisal" name="description" />
         <meta content="SDD-UBIDS" name="author" />
@@ -30,6 +59,145 @@
 
         <?php
             include "includes/header.inc.php";
+
+            // get appraisal details
+            $appraisal = select_all_where("appraisal", "appraisal_id", $id);
+
+            if(count($appraisal) > 0) {
+
+                // get appraisal result details
+
+                $appraisal_id = $appraisal[0]['appraisal_id'];
+                $staff_id = $appraisal[0]['staff_id'];
+                $department_id = $appraisal[0]['department_id'];
+                $fiscal_session_id = $appraisal[0]['fiscal_session_id'];
+                $total_score = $appraisal[0]['total_score'];
+                $grand_mean = $appraisal[0]['grand_mean'];
+                $remarks = $appraisal[0]['remarks'];
+                $general_comments = $appraisal[0]['general_comments'];
+
+
+
+
+
+               
+
+                // check if department of staff belongs to the same school as logged in user
+
+                if($_SESSION['appraisal_role'] == "Dean") {
+
+                     // use department id to check the school  it belongs to
+                    $staff_school_id = department_school_faculty_id($department_id);
+
+
+                    if($staff_school_id != $_SESSION['appraisal_sch_fac_dept_id']) {
+                        echo "<script>
+                                alert('You do no have access to this appraisal result. You will be redirected to the Dean dashboard');
+                                window.location.href='index_dean.php';
+                            </script>";
+                        exit();
+                    }
+                }
+
+                elseif($_SESSION['appraisal_role'] == "HOD") {
+
+                    
+
+                    if($department_id != $_SESSION['appraisal_sch_fac_dept_id']) {
+                        echo "<script>
+                                alert('You do no have access to this appraisal result. You will be redirected to the HOD dashboard');
+                                window.location.href='index_hod.php';
+                            </script>";
+                        exit();
+                    }
+
+                }
+                
+
+
+
+
+
+
+
+                
+                // identify staff and get staff details
+                $select_staff = select_all_where("staff", "staff_id", $staff_id)[0];
+                
+                $staff_id_no = $select_staff['staff_id_no'];
+                $staff_name = $select_staff['title'] . " " . $select_staff['staff_name'];
+                $position = $select_staff['position'];
+                $role = $select_staff['role'];
+
+                // identify appraiser role
+                $appraiser = "";
+                if($role == "HOD") {
+                    $appraiser = "Dean";
+                }
+                else {
+                    $appraiser = "HOD";
+                }
+
+                
+                // identify department and get department name
+                $select_department = select_all_where("departments", "department_id", $department_id)[0];
+
+                $department_name = $select_department['department_name'];
+                
+                
+                // identify school/faculty and get school/faculty name
+                $school_faculty_id = $select_department['school_faculty_id'];
+
+                $school_faculty_name = select_all_where("schools_faculties", "school_faculty_id", $school_faculty_id)[0]['school_faculty_name'];
+
+
+                // identify fiscal year and get details
+                $fiscal_year = fiscal_year($fiscal_session_id);
+
+
+                
+                
+                
+                // get appraisal evaluation summary details
+                $appraisal_details = select_all_where("appraisal_details", "appraisal_id", $appraisal_id);
+
+                if(count($appraisal_details) > 0) {
+
+                    // get appraisal details
+                    $appraisal_detail_id = $appraisal_details[0]['appraisal_detail_id'];
+                    $attendance = $appraisal_details[0]['attendance'];
+                    $deadline = $appraisal_details[0]['deadline'];
+                    $student_service = $appraisal_details[0]['student_service'];
+                    $relates_well = $appraisal_details[0]['relates_well'];
+                    $collaboration = $appraisal_details[0]['collaboration'];
+                    $evaluation_methods = $appraisal_details[0]['evaluation_methods'];
+                    $assignments = $appraisal_details[0]['assignments'];
+                    $sufficient_assignments = $appraisal_details[0]['sufficient_assignments'];
+                    $adheres_to_rules = $appraisal_details[0]['adheres_to_rules'];
+                    $marking_of_scripts = $appraisal_details[0]['marking_of_scripts'];
+
+
+
+                }
+
+                else {
+                    echo "<script>
+                        alert('No details found for this appraisal');
+                        history.back();
+                        </script>";
+                    exit();
+                }
+
+                
+
+            }
+            else {
+                echo "<script>
+                    alert('Error... Invalid appraisal result id');
+                    window.location.href = 'dashboard.php';
+                    </script>";
+                exit();
+            }
         ?>
 
     
@@ -74,38 +242,40 @@
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <div class="mb-4">
-                                                        <h4 class="float-end font-size-16">Staff ID # 12345</h4>
+                                                        <h4 class="float-end font-size-16">Staff ID # <?php echo $staff_id_no; ?></h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             
 
-                                            <p class="mb-1">Staff Appraisal Result, by Dean</p>
-                                            <p class="mb-1">Department of Computer Science</p>
+                                            <p class="mb-1">Staff Appraisal Result, by <?php echo $appraiser; ?></p>
+                                            <p class="mb-1"><?php echo ($appraiser == 'Dean') ? $school_faculty_name : $department_name; ?></p>
+
                                             <p>S. D. Dombo UBIDS</p>
+
                                         </div>
                                         <hr class="my-4">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div>
                                                     <h5 class="font-size-15 mb-3">Staff:</h5>
-                                                    <h5 class="font-size-14 mb-2">Dr. Ophelius Yinyeh</h5>
-                                                    <p class="mb-1">School of Computing and Information Sciences</p>
-                                                    <p class="mb-1">Department of Computer Science</p>
-                                                    <p>Dean of School/Faculty</p>
+                                                    <h5 class="font-size-14 mb-2"><?php echo $staff_name . " ($role)"; ?></h5>
+                                                    <p class="mb-1"><?php echo $department_name; ?></p>
+                                                    <p class="mb-1"><?php echo $school_faculty_name; ?></p>
+                                                    <p><?php echo $position; ?></p>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div>
                                                     <div>
                                                         <h5 class="font-size-15">Fiscal Year:</h5>
-                                                        <p>2020/2021</p>
+                                                        <p><?php echo $fiscal_year; ?></p>
                                                     </div>
                                                     
                                                     <div class="mt-4">
                                                         <h5 class="font-size-15">Appraisal Results:</h5>
-                                                        <p class="mb-1">Total Score: 45 out of 50</p>
-                                                        <p>Grand Mean: 4.2, Very Good</p>
+                                                        <p class="mb-1">Total Score: <?php echo $total_score; ?> out of 50</p>
+                                                        <p>Grand Mean: <?php echo $grand_mean . ", " . $remarks; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,7 +303,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Attendance and Punctuality to work </p>
                                                             </td>
-                                                            <td class="text-end">5</td>
+                                                            <td class="text-end"><?php echo $attendance; ?></td>
                                                         </tr>
                                                         
                                                         <tr>
@@ -141,12 +311,12 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Meets work deadline in a timely and efficient manner </p>
                                                             </td>
-                                                            <td class="text-end">4</td>
+                                                            <td class="text-end"><?php echo $deadline; ?></td>
                                                         </tr>
 
                                                         <tr>
                                                             <th scope="row" colspan="2" class="text-end">Sub Total</th>
-                                                            <td class="text-end">9</td>
+                                                            <td class="text-end"><?php echo $attendance + $deadline; ?></td>
                                                         </tr>
                                                         
 
@@ -171,7 +341,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Demonstrate effective positive customer/student service </p>
                                                             </td>
-                                                            <td class="text-end">5</td>
+                                                            <td class="text-end"><?php echo $student_service; ?></td>
                                                         </tr>
                                                         
                                                         <tr>
@@ -179,7 +349,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Relates well with colleagues and superiors </p>
                                                             </td>
-                                                            <td class="text-end">4</td>
+                                                            <td class="text-end"><?php echo $relates_well; ?></td>
                                                         </tr>
 
                                                         <tr>
@@ -187,12 +357,12 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Encourages collaboration and sharing of information </p>
                                                             </td>
-                                                            <td class="text-end">4</td>
+                                                            <td class="text-end"><?php echo $collaboration; ?></td>
                                                         </tr>
 
                                                         <tr>
                                                             <th scope="row" colspan="2" class="text-end">Sub Total</th>
-                                                            <td class="text-end">13</td>
+                                                            <td class="text-end"><?php echo $student_service + $relates_well + $collaboration; ?></td>
                                                         </tr>
                                                         
                                                     </tbody>
@@ -215,7 +385,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Fair and appropriate evaluation methods </p>
                                                             </td>
-                                                            <td class="text-end">5</td>
+                                                            <td class="text-end"><?php echo $evaluation_methods; ?></td>
                                                         </tr>
                                                         
                                                         <tr>
@@ -223,7 +393,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Assignments contribute to learning </p>
                                                             </td>
-                                                            <td class="text-end">4</td>
+                                                            <td class="text-end"><?php echo $assignments; ?></td>
                                                         </tr>
 
                                                         <tr>
@@ -231,12 +401,12 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Sufficient number of assignments </p>
                                                             </td>
-                                                            <td class="text-end">2</td>
+                                                            <td class="text-end"><?php echo $sufficient_assignments; ?></td>
                                                         </tr>
 
                                                         <tr>
                                                             <th scope="row" colspan="2" class="text-end">Sub Total</th>
-                                                            <td class="text-end">11</td>
+                                                            <td class="text-end"><?php echo $evaluation_methods + $assignments + $sufficient_assignments; ?></td>
                                                         </tr>
                                                         
                                                     </tbody>
@@ -259,7 +429,7 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0">Adheres to University policy and rules of conduct </p>
                                                             </td>
-                                                            <td class="text-end">5</td>
+                                                            <td class="text-end"><?php echo $adheres_to_rules; ?></td>
                                                         </tr>
                                                         
                                                         <tr>
@@ -267,13 +437,13 @@
                                                             <td>
                                                                 <p class="font-size-13 text-muted mb-0 text-wrap" >Adheres to Departmental procedures and regulations for marking of examination scripts </p>
                                                             </td>
-                                                            <td class="text-end">4</td>
+                                                            <td class="text-end"><?php echo $marking_of_scripts; ?></td>
                                                         </tr>
 
 
                                                         <tr>
                                                             <th scope="row" colspan="2" class="text-end">Sub Total</th>
-                                                            <td class="text-end">11</td>
+                                                            <td class="text-end"><?php echo $adheres_to_rules + $marking_of_scripts; ?></td>
                                                         </tr>
 
 
@@ -281,17 +451,13 @@
                                                         <tr>
                                                             <th scope="row" colspan="2" class="border-0 text-end">
                                                                 Grand Total</th>
-                                                            <td class="border-0 text-end">45 out of 50</td>
+                                                            <td class="border-0 text-end"><?php echo $total_score; ?> out of 50</td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row" colspan="2" class="border-0 text-end">Grand Mean</th>
-                                                            <td class="border-0 text-end"><h4 class="m-0">4.2, Very Good</h4></td>
+                                                            <td class="border-0 text-end"><h4 class="m-0"><?php echo $grand_mean . ", " . $remarks; ?></h4></td>
                                                         </tr>
 
-                                                        <!-- <tr>
-                                                            <th scope="row" colspan="2" class="border-0 text-end">Remarks</th>
-                                                            <td class="border-0 text-end"><h4 class="m-0">Very Good</h4></td>
-                                                        </tr> -->
                                                         
                                                     </tbody>
                                                 </table>
@@ -309,7 +475,7 @@
 
                                                         <tr>
                                                             <td>
-                                                                <p class="font-size-13 text-muted mb-0 text-wrap">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt voluptatum dolor id delectus, cum accusamus! Placeat ab a est dignissimos ad ducimus cumque delectus? Cum culpa adipisci saepe doloremque voluptatum. </p>
+                                                                <p class="font-size-13 text-muted mb-0 text-wrap"><?php echo $general_comments; ?> </p>
                                                             </td>
                                                         </tr>
                                                         
