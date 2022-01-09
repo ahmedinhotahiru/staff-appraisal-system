@@ -177,6 +177,7 @@
                                     if(count($all_staff) > 0) {
 
                                         // get staff details
+                                        $unappraised_staff = 0;
                                         foreach ($all_staff as $staff) {
                                             
                                             $staff_id = $staff['staff_id'];
@@ -194,7 +195,6 @@
                                                 $staff_appraised = select_all_where_and("appraisal", "staff_id", $staff_id, "fiscal_session_id", $fiscal_session_id);
 
                                                 // count unappraised eligible staff
-                                                $unappraised_staff = 0;
 
                                                 if(count($staff_appraised) < 1) {
 
@@ -227,6 +227,8 @@
 
                                     if(count($all_staff) > 0) {
 
+                                        $unappraised_staff = 0;
+
                                         foreach ($all_staff as $staff) {
                                             
                                             
@@ -238,7 +240,6 @@
                                             $staff_appraised = select_all_where_and("appraisal", "staff_id", $staff_id, "fiscal_session_id", $fiscal_session_id);
 
                                             // count unappraised eligible staff
-                                            $unappraised_staff = 0;
 
                                             if(count($staff_appraised) < 1){
 

@@ -100,5 +100,5 @@
     </body>
 
 
-<!-- Mirrored from minia.php.themesbrand.com/auth-email-verification.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Nov 2021 12:08:12 GMT -->
+
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-include "../dbh/dbh.php";
+include "dbh/dbh.php";
 
 
 if(isset($_POST['reset-password'])) {
@@ -56,7 +56,7 @@ if(isset($_POST['reset-password'])) {
           elseif(password_verify($tokenBin, $hashedBinToken) == true) {
 
               // user has been verified, so update the password in the database
-              $sql = "SELECT * FROM admin WHERE email = ?";
+              $sql = "SELECT * FROM staff WHERE email = ?";
               
               // QUERY USING PDOStatement
               $stmt = $pdo->prepare($sql);
@@ -71,18 +71,21 @@ if(isset($_POST['reset-password'])) {
                 
                 foreach($result as $user) {
 
+                  // get the STAFF ID
+                  $staff_id = $user['staff_id'];
+
                   // get the user ID
-                  $userId = $user['id'];
+                  // $userId = $user['id'];
 
                   // hash new password and update db
                   $newPasswordHashed = password_hash($password, PASSWORD_DEFAULT);
-                  $sql = "UPDATE admin SET password = ? WHERE id = ? AND email = ? LIMIT 1;";
+                  $sql = "UPDATE users SET password = ? WHERE staff_id = ? LIMIT 1;";
 
                   // query using PDO
                   try{
                     
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$newPasswordHashed, $userId, $tokenEmail]);
+                    $stmt->execute([$newPasswordHashed, $staff_id]);
                   }
                   catch (PDOException $e) {
                     echo "An error occured, try again." . $e->getMessage();

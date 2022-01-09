@@ -12,6 +12,9 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="../assets/images/logo.png">
 
+        <!-- Sweet Alert-->
+        <link href="../assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
         <!-- twitter-bootstrap-wizard css -->
         <link rel="stylesheet" href="../assets/libs/twitter-bootstrap-wizard/prettify.css">
 
@@ -37,6 +40,7 @@
 
             // check for form submission and identify staff
             if(!isset($_POST['appraise_staff'])) {
+
                 echo "<script>
                         alert('Please select a fiscal year and staff to appraise');
                         window.location.href = 'appraisal-select-session.php';
@@ -99,6 +103,24 @@
                                     $staff_name = $staff[0]['staff_name'];
 
                                     $staff_fullname = $title . " " . $staff_name;
+
+                                    $department_id = $staff[0]['sch_fac_dept_id'];
+
+
+
+
+                                    // check if staff is appraised already
+                                    $staff_appraised = select_all_where_and("appraisal", "staff_id", $staff_id, "fiscal_session_id", $fiscal_session_id);
+
+                                    if(count($staff_appraised) > 0) {
+                                        echo "<script>
+                                                    alert('Staff has been appraised already.');
+                                                    window.location.href = 'appraisal-select-session.php';
+                                                </script>";
+                                            exit();
+                                    }
+
+
                                 }
                                 else {
                                     echo "<script>
@@ -132,7 +154,7 @@
 
 
 
-        <form action="" method="post">
+        <form action="submit-appraisal.php" method="post">
 
                 <div class="page-content">
                     <div class="container-fluid">
@@ -146,7 +168,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Appraisal</a></li>
-                                            <li class="breadcrumb-item active">Staff Appraisal</li>
+                                            <li class="breadcrumb-item active"><?php echo $fiscal_year; ?> Fiscal Year</li>
                                         </ol>
                                     </div>
 
@@ -186,7 +208,7 @@
 
                                                                     <!-- input class="form-check-input" -->
 
-                                                                    <tr>
+                                                                    <tr id="attendance_row">
                                                                         <td>Attendance and Punctuality to work</td>
                                                                         <td>
                                                                             <span class="">
@@ -220,7 +242,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="deadline_row">
                                                                         <td>Meets work deadline in a timely and efficient manner</td>
                                                                         <td>
                                                                             <span class="">
@@ -277,7 +299,7 @@
                                                             <table class="table table-hover">
                                                                 <tbody>
 
-                                                                    <tr>
+                                                                    <tr id="student_service_row">
                                                                         <td>Demonstrate effective positive customer/student service</td>
                                                                         <td>
                                                                             <span class="">
@@ -311,7 +333,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="relates_well_row">
                                                                         <td>Relates well with colleagues and superiors</td>
                                                                         <td>
                                                                             <span class="">
@@ -345,7 +367,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="collaboration_row">
                                                                         <td>Encourages collaboration and sharing of information</td>
                                                                         <td>
                                                                             <span class="">
@@ -402,7 +424,7 @@
                                                             <table class="table table-hover">
                                                                 <tbody>
 
-                                                                    <tr>
+                                                                    <tr id="evaluation_methods_row">
                                                                         <td>Fair and appropriate evaluation methods</td>
                                                                         <td>
                                                                             <span class="">
@@ -436,7 +458,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="assignments_row">
                                                                         <td>Assignments contribute to learning</td>
                                                                         <td>
                                                                             <span class="">
@@ -470,7 +492,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="sufficient_assignments_row">
                                                                         <td>Sufficient number of assignments</td>
                                                                         <td>
                                                                             <span class="">
@@ -528,7 +550,7 @@
                                                             <table class="table table-hover">
                                                                 <tbody>
 
-                                                                    <tr>
+                                                                    <tr id="adheres_to_rules_row">
                                                                         <td>Adheres to University policy and rules of conduct</td>
                                                                         <td>
                                                                             <span class="">
@@ -562,7 +584,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <tr>
+                                                                    <tr id="marking_of_scripts_row">
                                                                         <td>Adheres to Departmental procedures and regulations for marking of examination scripts</td>
                                                                         <td>
                                                                             <span class="">
@@ -606,24 +628,28 @@
                                             </div>
                                         </div>
 
+                                        
 
 
-                                        <!-- administration -->
+
+                                        <!-- General Comments -->
                                         <div class="card mt-5">
                                             <div class="card-header">
-                                                <h4 class="card-title mb-0">Administration</h4>
+                                                <h4 class="card-title mb-0">General Comments</h4>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-lg-12">
 
-                                                        <textarea name="general_comments" class="form-control" required id="" cols="30" rows="10"></textarea>
+                                                        <textarea name="general_comments" class="form-control" required id="general_comments" cols="30" rows="10" required></textarea>
 
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        
 
 
                                         <div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
@@ -635,107 +661,259 @@
                                                     <div class="modal-body">
                                                         <div class="text-center">
                                                             <div class="mb-3">
-                                                                <i class="bx bx-check-circle display-4 text-success"></i>
+                                                                <i class="bx display-4" id="circle_color"></i>
                                                             </div>
-                                                            <h5 id="resultH"></h5>
-                                                            <p class="text-danger" id="display_results"></p>
-                                                            <!-- <h5>Confirm Save Changes</h5> -->
+                                                            <h5 id="display_grand"></h5>
+                                                            <p class="" id="display_results"></p>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <button type="submit" class="btn btn-primary w-md" data-bs-dismiss="modal"
-                                                        >Save changes</button>
+                                                        <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal"
+                                                        >Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <button type="button" data-bs-toggle="modal" data-bs-target=".confirmModal" onclick="result();">Submit</button>
+                                        <div class="d-print-none mt-5">
+                                            <div class="float-end">
+                                                <a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".confirmModal" onclick="result();"><i class="mdi mdi-eye"></i> Check Result
+                                                </a>
 
-                                        <div class="mt-5">
-                                            <a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".confirmModal" onclick="result();">Save Changes
-                                            </a>
+
+                                                <!-- hidden inputs -->
+                                                <input type="hidden" name="fiscal_session_id" value="<?php echo $fiscal_session_id; ?>">
+                                                <input type="hidden" name="staff_id" value="<?php echo $staff_id; ?>">
+                                                <input type="hidden" name="department_id" value="<?php echo $department_id; ?>">
+                                                <input type="hidden" name="submit_appraisal" value="<?php echo $department_id; ?>">
+
+                                                <button type="submit"  id="appraisal_sub_button" onclick="form_val_sub(); myConfirmApp();" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-check"></i> Submit Appraisal</button>
+
+                                                <!-- <button type="button" class="btn btn-primary" id="sa-warning2"><i class="mdi mdi-check"></i> Submit Appraisal</button> -->
+
+                                                
+                                            </div>
                                         </div>
 
 
+                                        
+                                        
+
+
+
                                         <script>
-                                            function result() {
 
-                                                var display_error = document.getElementById('result');
-                                                var display_result = document.getElementById('display_results');
+                                            function form_validation() {
+                                                var attendance = document.querySelector('input[name="attendance"]:checked');
+                                                var deadline = document.querySelector('input[name="deadline"]:checked');
+                                                var student_service = document.querySelector('input[name="student_service"]:checked');
+                                                var relates_well = document.querySelector('input[name="relates_well"]:checked');
+                                                var collaboration = document.querySelector('input[name="collaboration"]:checked');
+                                                var evaluation_methods = document.querySelector('input[name="evaluation_methods"]:checked');
+                                                var assignments = document.querySelector('input[name="assignments"]:checked');
+                                                var sufficient_assignments = document.querySelector('input[name="sufficient_assignments"]:checked');
+                                                var adheres_to_rules = document.querySelector('input[name="adheres_to_rules"]:checked');
+                                                var marking_of_scripts = document.querySelector('input[name="marking_of_scripts"]:checked');
 
-                                                var attendance = document.querySelectorAll('input[name="attendance"]');
-                                                var deadline = document.querySelectorAll('input[name="deadline"]');
-                                                var student_service = document.querySelectorAll('input[name="student_service"]');
-                                                var relates_well = document.querySelectorAll('input[name="relates_well"]');
-                                                var collaboration = document.querySelectorAll('input[name="collaboration"]');
-                                                var evaluation_methods = document.querySelectorAll('input[name="evaluation_methods"]');
-                                                var assignments = document.querySelectorAll('input[name="assignments"]');
-                                                var sufficient_assignments = document.querySelectorAll('input[name="sufficient_assignments"]');
-                                                var adheres_to_rules = document.querySelectorAll('input[name="adheres_to_rules"]');
-                                                var marking_of_scripts = document.querySelectorAll('input[name="marking_of_scripts"]');
 
-                                                if(!attendance.checked || !deadline.checked || !student_service.checked || !relates_well.checked || !collaboration.checked || !evaluation_methods.checked || !assignments.checked || !sufficient_assignments.checked || !adheres_to_rules.checked || !marking_of_scripts.checked) {
-                                                    display_result.innerHTML = "Some have not been selected";
+                                                if(!attendance || !deadline || !student_service || !relates_well || !collaboration || !evaluation_methods || !assignments || !sufficient_assignments || !adheres_to_rules || !marking_of_scripts) {
+
+                                                    // row validation colors
+
+                                                    if(!attendance) {
+                                                        document.getElementById('attendance_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('attendance_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!deadline) {
+                                                        document.getElementById('deadline_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('deadline_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!student_service) {
+                                                        document.getElementById('student_service_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('student_service_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!relates_well) {
+                                                        document.getElementById('relates_well_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('relates_well_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!collaboration) {
+                                                        document.getElementById('collaboration_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('collaboration_row').classList.remove('table-danger');
+                                                    }
+
                                                     
-                                                    alert("Some have not been selected");
+                                                    if(!evaluation_methods) {
+                                                        document.getElementById('evaluation_methods_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('evaluation_methods_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!assignments) {
+                                                        document.getElementById('assignments_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('assignments_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!sufficient_assignments) {
+                                                        document.getElementById('sufficient_assignments_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('sufficient_assignments_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!adheres_to_rules) {
+                                                        document.getElementById('adheres_to_rules_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('adheres_to_rules_row').classList.remove('table-danger');
+                                                    }
+
+                                                    if(!marking_of_scripts) {
+                                                        document.getElementById('marking_of_scripts_row').classList.add('table-danger');
+                                                    }
+                                                    else {
+                                                        document.getElementById('marking_of_scripts_row').classList.remove('table-danger');
+                                                    }
+
+                                                    
+
+                                                    
+                                                    return false;
                                                 }
                                                 else {
-                                                    // document.getElementById('result').innerHTML = "all available";
-                                                    alert("else");
+
+                                                    document.getElementById('attendance_row').classList.remove('table-danger');
+                                                    document.getElementById('deadline_row').classList.remove('table-danger');
+                                                    document.getElementById('student_service_row').classList.remove('table-danger');
+                                                    document.getElementById('relates_well_row').classList.remove('table-danger');
+                                                    document.getElementById('collaboration_row').classList.remove('table-danger');
+                                                    document.getElementById('evaluation_methods_row').classList.remove('table-danger');
+                                                    document.getElementById('assignments_row').classList.remove('table-danger');
+                                                    document.getElementById('sufficient_assignments_row').classList.remove('table-danger');
+                                                    document.getElementById('adheres_to_rules_row').classList.remove('table-danger');
+                                                    document.getElementById('marking_of_scripts_row').classList.remove('table-danger');
+                                                    
+                                                    
+                                                    return true;
+                                                }
+
+                                            }
+
+                                            
+
+                                            function result() {
+
+                                                var display_grand = document.getElementById('display_grand');
+                                                var display_result = document.getElementById('display_results');
+                                                var circle_color = document.getElementById('circle_color');
+
+                                                
+                                                if(form_validation() == false) {
+
+                                                    display_result.innerHTML = "Some options have not been selected. <br>Please select all options and try to calculate result again";
+                                                    
+                                                    circle_color.classList.remove("bx-check-circle", "text-success");
+                                                    circle_color.classList.add("bx-error-alt", "text-danger");
+
+                                                    display_grand.innerHTML = "Please select all options";
+                                                    
+                                                }
+                                                else {
+                                                    // get details
+                                                    const attendance = document.querySelector('input[name="attendance"]:checked');
+                                                    const deadline = document.querySelector('input[name="deadline"]:checked');
+                                                    const student_service = document.querySelector('input[name="student_service"]:checked');
+                                                    const relates_well = document.querySelector('input[name="relates_well"]:checked');
+                                                    const collaboration = document.querySelector('input[name="collaboration"]:checked');
+                                                    const evaluation_methods = document.querySelector('input[name="evaluation_methods"]:checked');
+                                                    const assignments = document.querySelector('input[name="assignments"]:checked');
+                                                    const sufficient_assignments = document.querySelector('input[name="sufficient_assignments"]:checked');
+                                                    const adheres_to_rules = document.querySelector('input[name="adheres_to_rules"]:checked');
+                                                    const marking_of_scripts = document.querySelector('input[name="marking_of_scripts"]:checked');
+                                                    // compute for the grand mean result
+
+                                                    display_result.innerHTML = "";
+                                                    display_grand.innerHTML = "";
+
+                                                    circle_color.classList.remove("bx-error-alt", "text-danger");
+                                                    circle_color.classList.add("bx-check-circle", "text-success");
+
+                                                    const mean_1 = (parseInt(attendance.value) + parseInt(deadline.value)) / 2;
+
+                                                    const mean_2 = (parseInt(student_service.value) + parseInt(relates_well.value) + parseInt(collaboration.value)) / 3;
+
+                                                    const mean_3 = (parseInt(evaluation_methods.value) + parseInt(assignments.value) + parseInt(sufficient_assignments.value)) / 3;
+
+                                                    const mean_4 = (parseInt(adheres_to_rules.value) + parseInt(marking_of_scripts.value)) / 2;
+
+                                                    const grand_mean_score = (mean_1 + mean_2 + mean_3 + mean_4) / 4;
+
+                                                    const grand_mean_score_rounded = Math.round((grand_mean_score + Number.EPSILON) * 100) / 100;
+
+
+                                                    display_grand.innerHTML = "Grand Mean: " + grand_mean_score_rounded;
+
+                                                    if(grand_mean_score_rounded < 1) {
+                                                        display_result.innerHTML = "Performance Remarks: Very Poor";
+                                                    }
+                                                    else if(grand_mean_score_rounded >= 1 && grand_mean_score_rounded < 2) {
+                                                        display_result.innerHTML = "Performance Remarks: Poor";
+                                                    }
+                                                    else if(grand_mean_score_rounded >= 2 && grand_mean_score_rounded < 3) {
+                                                        display_result.innerHTML = "Performance Remarks: Average";
+                                                    }
+                                                    else if(grand_mean_score_rounded >= 3 && grand_mean_score_rounded < 4) {
+                                                        display_result.innerHTML = "Performance Remarks: Good";
+                                                    }
+                                                    else if(grand_mean_score_rounded >= 4) {
+                                                        display_result.innerHTML = "Performance Remarks: Very Good";
+                                                    }
+
                                                     
                                                 }
 
-                                                // var selected_options= 0;
-                                                // for(selection of selections) {
-                                                //     if(selection.checked) {
-                                                //         $selected_options++;
-                                                //     }
-                                                // }
-
-                                                // if(selected_options < 1) {
-                                                //     document.getElementById('result').innerHTML = "Some have not been selected";
-                                                // }
-
-
-
-                                                // if($('input[type=radio]:checked').size()) < 10) {
-                                                //     alert();
-                                                //     document.getElementById('display_results').innerHTML = "Some options have not been selected, try again";
-                                                // }
-                                                // else {
-                                                //     display_result.innerHTML = "Hurray";
-                                                // }
                                                 
+                                                
+                                            }
+
+
+                                            function form_val_sub() {
+                                                
+                                                // document.getElementById('appraisal_sub_button').addEventListener("click", function(event) {
+                                                //         event.preventDefault()
+                                                //     });
+                                                
+                                                if(form_validation() == false) {
+
+                                                    return false;
+                                                    
+                                                }
+                                                else {
+                                                    
+                                                    // document.getElementById('appraisal_sub_button').addEventListener("submit")
+
+                                                    
+                                                }
                                             }
                                         </script>
 
-
-
-
-
-                                        
-                                        
-
-                                       
-
-                                        <!-- administration -->
-                                        <!-- <div class="mt-5" id="progress-administration">
-                                            <div>
-                                               
-
-                                                <ul class="pager wizard twitter-bs-wizard-pager-link">
-                                                    <li class="float-end">
-                                                        <a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                                            data-bs-target=".confirmModal" onclick="result();">Save
-                                                            Changes
-                                                        </a>
-                                                    </li>
-                                                </ul>
-
-                                            </div>
-                                        </div> -->
 
                                         
                                     </div>
@@ -808,6 +986,42 @@
         <script src="../assets/libs/feather-icons/feather.min.js"></script>
         <!-- pace js -->
         <script src="../assets/libs/pace-js/pace.min.js"></script>
+
+        <!-- Sweet Alerts js -->
+        <script src="../assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+        <!-- Sweet alert init js-->
+        <script src="../assets/js/pages/sweetalert.init.js"></script>
+
+        <script>
+            function myConfirmApp() {
+                event.preventDefault();
+                
+                var form = event.target.form;
+                Swal.fire({ title: "Are you sure?", text: "You won't be able to revert this!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#2ab57d", cancelButtonColor: "#fd625e", confirmButtonText: "Yes, submit!", closeOnConfirm: false, closeOnCancel: true }).then(function (
+                    e
+                ) {
+                    if(e.value==true) {
+                        if(form_validation()==true) {
+                            if(document.getElementById('general_comments').value=="") {
+                                alert('General Comments field is required');
+                            }
+                            else {
+                                form.submit();
+                            }
+                        }
+                        else {
+                            Swal.fire("Please select all options!", "Some options have not been selected.", "error");
+                        }
+                        
+                        
+                    }
+                    else {
+                        Swal.fire("Cancelled!", "Your appraisal was not submitted.", "error");
+                    }
+                });
+            }
+        </script>
 
         <!-- twitter-bootstrap-wizard js -->
         <script src="../assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>

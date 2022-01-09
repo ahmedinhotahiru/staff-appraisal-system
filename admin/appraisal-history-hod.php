@@ -22,6 +22,9 @@
         <!-- Responsive datatable examples -->
         <link href="../assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
 
+        <!-- datatables buttons css -->
+        <link rel="stylesheet" href="../assets/css/buttons.dataTables.min.css">
+
         <!-- preloader css -->
         <link rel="stylesheet" href="../assets/css/preloader.min.css" type="text/css" />
 
@@ -325,6 +328,15 @@
         <!-- Responsive examples -->
         <script src="../assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
         <script src="../assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+
+         <!-- datatables buttons cdns -->
+        <script src="../assets/libs/cdns/datatables.buttons.min.js"></script>
+        <script src="../assets/libs/cdns/jszip.min.js"></script>
+        <script src="../assets/libs/cdns/pdfmake.min.js"></script>
+        <script src="../assets/libs/cdns/vfs_fonts.js"></script>
+        <script src="../assets/libs/cdns/buttons.html5.min.js"></script>
+        <script src="../assets/libs/cdns/buttons.print.min.js"></script>
 
         <!-- init js -->
         <script src="../assets/js/pages/invoices-list.init.js"></script>

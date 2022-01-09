@@ -75,8 +75,8 @@ if(isset($_POST['reset-password'])) {
 
       
     $to   = $userEmail;
-    $from = 'info@thylies.com';
-    $from_name = 'Thylies, Inc';
+    $from = 'ahmedmailer00@gmail.com';
+    $from_name = 'SDD UBIDS STAFF APPRAISAL';
     $subject = 'Reset your password';
     // $base_url = "https://www.thylies.com/";
     $base_url = "http://$_SERVER[HTTP_HOST]";
@@ -91,12 +91,12 @@ if(isset($_POST['reset-password'])) {
     $mail->SMTPSecure = 'ssl'; 
     $mail->Host = 'smtp.thylies.com';
     $mail->Port = 465;  
-    $mail->Username = 'info@thylies.com';
-    $mail->Password = 'Un0549f7d';
+    $mail->Username = 'ahmedmailer00@gmail.com';
+    $mail->Password = 'F123456789f';
                             
     $mail->IsHTML(true);
     $mail->WordWrap = 50;
-    $mail->From = "info@thylies.com";
+    $mail->From = "ahmedmailer00@gmail.com";
     $mail->FromName = $from_name;
     $mail->Sender = $from;
     $mail->AddReplyTo($from, $from_name);
@@ -107,7 +107,7 @@ if(isset($_POST['reset-password'])) {
 
     if (!$resultMail) {
         echo "<script>
-                alert('Error... Couldn't send reset link, please try again');
+                alert('Error... Could not send reset link, please try again');
                 window.location.href = 'auth-recoverpw.php';
               </script>"
         ;

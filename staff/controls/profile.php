@@ -91,8 +91,23 @@ if(isset($_POST['update'])) {
 
         if($stmt->execute([$staff_id_no, $title, $staff_name, $position, $email, $staff_id])) {
 
-            header("Location: ../profile.php?edit=success");
-            exit();
+            // if succeeded, also update staff id no for users table
+            $sql = "UPDATE users SET staff_id_no=? WHERE staff_id=?";
+
+            // pdo query
+            $stmt = $pdo->prepare($sql);
+
+            if($stmt->execute([$staff_id_no, $staff_id])) {
+                header("Location: ../profile.php?edit=success");
+                exit();
+            }
+            else {
+                header("Location: ../profile.php?edit=failed&staff_id_no=$staff_id_no&email=$email&title=$title&staff_name=$staff_name&position=$position");
+
+                exit();
+            }
+
+            
         }
         else {
 

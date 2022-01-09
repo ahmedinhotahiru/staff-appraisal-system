@@ -486,11 +486,22 @@
                                                
                                             </div>
                                         </div>
+
+                                        
                                         <div class="d-print-none mt-3">
                                             <div class="float-end">
                                                 <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i> Print Result</a>
                                             </div>
                                         </div>
+
+                                        <div class="d-none d-print-block mt-5">
+                                            <br>
+                                            <div class="row">
+                                                    <p class="d-inline mt-5">Signature (<?php echo $_SESSION['appraisal_role']; ?>) <span class="float-end">Date: 25/Dec/2021</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

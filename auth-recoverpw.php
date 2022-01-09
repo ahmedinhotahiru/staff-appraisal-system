@@ -48,13 +48,70 @@
                                         <div class="alert alert-success text-center my-4" role="alert">
                                             Enter your Email and instructions will be sent to you!
                                         </div>
-                                        <form class="mt-4" action="auth-recover-success.php">
+
+
+
+
+                                        <!-- display error messages here -->
+                                        <?php
+                                            if(isset($_GET['error'])) {
+                                                $error = $_GET['error'];
+                                                switch ($error) {
+                                                    case 'empty':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Email is required!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+
+
+                                                    case 'userNotFound':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Email not found for any user!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+
+                                                    case 'failed':
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                Request failed! Please try again
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                                </div>';
+                                                        break;
+
+                                                   
+                                                    
+                                                    default:
+                                                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <i class="mdi mdi-block-helper me-2"></i>
+                                                                An error occured, try again!
+                                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                              </div>';
+                                                        break;
+                                                }
+                                            }
+
+                                            
+
+                                        ?>
+
+
+
+
+
+
+
+
+                                        <form class="mt-4" action="reset-password-request.php" method="post">
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input type="text" class="form-control" id="email" placeholder="Enter email">
+                                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" value="<?php if(isset($_GET['email'])) {echo $_GET['email'];} ?>">
                                             </div>
                                             <div class="mb-3 mt-4">
-                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Reset</button>
+                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit" name="reset-password">Reset</button>
                                             </div>
                                         </form>
 

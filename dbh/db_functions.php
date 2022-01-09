@@ -371,6 +371,27 @@ function fiscal_year($fiscal_session_id) {
 
 
 
+function staff_fullname($staff_id) {
+    global $pdo;
+    
+
+
+    $sql = "SELECT * FROM staff WHERE staff_id=?";
+    
+    // pdo query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$staff_id]);
+
+    $result = $stmt->fetchAll();
+    
+    if(count($result) > 0) {
+        return $result[0]['title'] . " " . $result[0]['staff_name'];
+    }
+    
+}
+
+
+
 
 
 
@@ -530,7 +551,7 @@ function send_mail($to, $subject, $body) {
 
    
     
-    $from = 'info@thylies.com';
+    $from = 'ahmedmailer00@gmail.com';
     $from_name = 'Thylies, Inc';
     
 
@@ -541,12 +562,12 @@ function send_mail($to, $subject, $body) {
     $mail->SMTPSecure = 'ssl'; 
     $mail->Host = 'smtp.thylies.com';
     $mail->Port = 465;  
-    $mail->Username = 'info@thylies.com';
-    $mail->Password = 'Un0549f7d';
+    $mail->Username = 'ahmedmailer00@gmail.com';
+    $mail->Password = 'F123456789f';
                             
     $mail->IsHTML(true);
     $mail->WordWrap = 50;
-    $mail->From = "info@thylies.com";
+    $mail->From = "ahmedmailer00@gmail.com";
     $mail->FromName = $from_name;
     $mail->Sender = $from;
     $mail->AddReplyTo($from, $from_name);

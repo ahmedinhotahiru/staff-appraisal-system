@@ -5,22 +5,22 @@
     <head>
 
         <meta charset="utf-8" />
-        <title>Reset Password | Admin Staff Appraisal - SDD UBIDS</title>
+        <title>Reset Password | Staff Appraisal - SDD UBIDS</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="SDD-UBIDS Staff Appraisal" name="description" />
         <meta content="SDD-UBIDS" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="../assets/images/logo.png">
+        <link rel="shortcut icon" href="assets/images/logo.png">
 
         <!-- preloader css -->
-        <link rel="stylesheet" href="../assets/css/preloader.min.css" type="text/css" />
+        <link rel="stylesheet" href="assets/css/preloader.min.css" type="text/css" />
 
         <!-- Bootstrap Css -->
-        <link href="../assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
-        <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
-        <link href="../assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -38,13 +38,13 @@
                                 <div class="d-flex flex-column h-100">
                                     <div class="mb-4 mb-md-5 text-center">
                                         <a href="index.php" class="d-block auth-logo">
-                                            <img src="../assets/images/logo.png" alt="" height="28"> <span class="logo-txt">SDD UBIDS</span>
+                                            <img src="assets/images/logo.png" alt="" height="28"> <span class="logo-txt">SDD UBIDS</span>
                                         </a>
                                     </div>
                                     <div class="auth-content my-auto">
                                         <div class="text-center">
                                             <h5 class="mb-0">Create New Password</h5>
-                                            <p class="text-muted mt-2">Administrator.</p>
+                                            <p class="text-muted mt-2">Staff Appraisal Sytem</p>
                                         </div>
 
 
@@ -264,16 +264,16 @@
 
 
         <!-- JAVASCRIPT -->
-        <script src="../assets/libs/jquery/jquery.min.js"></script>
-        <script src="../assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/libs/metismenu/metisMenu.min.js"></script>
-        <script src="../assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="../assets/libs/node-waves/waves.min.js"></script>
-        <script src="../assets/libs/feather-icons/feather.min.js"></script>
+        <script src="assets/libs/jquery/jquery.min.js"></script>
+        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="assets/libs/node-waves/waves.min.js"></script>
+        <script src="assets/libs/feather-icons/feather.min.js"></script>
         <!-- pace js -->
-        <script src="../assets/libs/pace-js/pace.min.js"></script>
+        <script src="assets/libs/pace-js/pace.min.js"></script>
         <!-- password addon init -->
-        <script src="../assets/js/pages/pass-addon.init.js"></script>
+        <script src="assets/js/pages/pass-addon.init.js"></script>
 
     </body>
 

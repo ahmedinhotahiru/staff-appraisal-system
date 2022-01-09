@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2021 at 03:55 PM
+-- Generation Time: Jan 09, 2022 at 03:53 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -73,7 +73,13 @@ INSERT INTO `appraisal` (`appraisal_id`, `staff_id`, `department_id`, `fiscal_se
 (7, 19, 3, 5, 20, 1.96, 'Poor', 'This is a poor performance. Staff must sit up'),
 (8, 20, 15, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
 (9, 21, 3, 5, 36, 3.67, 'Good', 'This is a good performance'),
-(10, 23, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.');
+(10, 23, 3, 5, 32, 2.3, 'Average', 'This is an average performance. Not bad, but staff can do better.'),
+(14, 18, 15, 5, 38, 3.75, 'Good', 'You can do better'),
+(15, 25, 16, 5, 47, 4.75, 'Very Good', 'Amazing, keep it up'),
+(16, 14, 15, 1, 39, 3.79, 'Good', 'very fair'),
+(17, 16, 15, 1, 27, 2.71, 'Average', 'You can do better'),
+(18, 25, 16, 1, 44, 4.42, 'Very Good', 'Amazing Performance, keep it up'),
+(19, 18, 15, 1, 30, 2.92, 'Average', 'You can do better');
 
 -- --------------------------------------------------------
 
@@ -110,7 +116,13 @@ INSERT INTO `appraisal_details` (`appraisal_detail_id`, `appraisal_id`, `attenda
 (7, 7, 2, 2, 2, 3, 3, 2, 2, 1, 2, 1),
 (8, 8, 2, 3, 4, 5, 3, 4, 5, 4, 1, 1),
 (9, 9, 2, 2, 2, 3, 3, 2, 2, 1, 2, 1),
-(10, 10, 2, 3, 4, 5, 3, 4, 5, 4, 1, 1);
+(10, 10, 2, 3, 4, 5, 3, 4, 5, 4, 1, 1),
+(12, 14, 3, 2, 4, 4, 3, 4, 4, 5, 5, 4),
+(13, 15, 5, 5, 5, 5, 4, 5, 4, 4, 5, 5),
+(14, 16, 1, 4, 4, 5, 4, 4, 5, 4, 4, 4),
+(15, 17, 2, 2, 2, 2, 5, 1, 2, 4, 2, 5),
+(16, 18, 5, 4, 5, 4, 3, 5, 4, 5, 4, 5),
+(17, 19, 3, 2, 3, 4, 3, 3, 4, 3, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -152,9 +164,9 @@ CREATE TABLE `fiscal_sessions` (
 --
 
 INSERT INTO `fiscal_sessions` (`fiscal_session_id`, `fiscal_year`, `deadline`, `status`) VALUES
-(1, '2018/2019', '2022-01-20', 1),
+(1, '2018/2019', '2019-06-22', 2),
 (4, '2019/2020', '2021-12-29', 2),
-(5, '2020/2021', '2021-12-24', 1);
+(5, '2020/2021', '2021-12-24', 2);
 
 -- --------------------------------------------------------
 
@@ -225,10 +237,11 @@ INSERT INTO `staff` (`staff_id`, `staff_id_no`, `title`, `staff_name`, `sch_fac_
 (21, 'UBIDS54785', 'Prof.', 'Daabo Nkrumah', 3, 'Lecturer', 'Liberian', 'dopi@yahoo.com'),
 (22, 'UBIDS63254', 'Prof.', 'Mahmood Bawumia', 15, 'Lecturer', 'Senior Lecturer', 'mahmoud@gmail.com'),
 (23, 'UBIDS98546', 'Ms.', 'Rodalyn Quaye', 3, 'Lecturer', 'Lecturer', 'roqu@gmail.com'),
-(24, 'UBIDS36487', 'Prof.', 'Daabo Ibrahim', 2, 'Dean', 'Senior Lecturer', 'issahahmed@gmail.com'),
+(24, 'UBIDS36487', 'Prof.', 'Daabo Ibrahim', 2, 'Dean', 'Senior Lecturer', 'issahahmed00@gmail.com'),
 (25, 'UBIDS24589', 'Prof.', 'Edward Baagyere', 16, 'HOD', 'Senior Lecturer', 'ahmedinhonasheedsmedia@gmail.com'),
 (26, 'UBIDS65879', 'Dr.', 'Wisdom Nagaye', 9, 'Dean', 'Senior Lecturer', 'issahahmed00dff@gmail.com'),
-(27, 'UBIDS54789', 'Prof.', 'Ophelius Yinyeh', 9, 'Dean', 'Director Ict', 'ophelius24@gmail.com');
+(27, 'UBIDS54789', 'Prof.', 'Ophelius Yinyeh', 9, 'Dean', 'Director Ict', 'ophelius24@gmail.com'),
+(28, 'DEY', 'Dr.', 'Clinton', 9, 'Dean', 'Senior Lecturer', 'clintondey3@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -254,10 +267,11 @@ INSERT INTO `users` (`user_id`, `staff_id`, `staff_id_no`, `password`) VALUES
 (13, 16, 'UBIDS56878', '$2y$10$kPhqs.BvJKUNMKKU3iFiNezw9JYZys266PX09m2b8VkAWSkD9GGda'),
 (14, 17, 'UBIDS56578', '$2y$10$K9JYNjmpOYRY81HJv9hWquixqoM0VQ37VX6FIzQ/vtiMoHshhNLYS'),
 (15, 18, 'UBIDS68765', '$2y$10$HkcfvWw/vhY2tmZACnCFBuwGR3k51pBpb5ojbTM5JtFZ5ATPqBi5O'),
-(16, 24, 'UBIDS36487', '$2y$10$fxOjBVNoaqXa.Bb.9x5oaOsLzx5aOqfNYm5jODUM3nl.O9Og41sRC'),
+(16, 24, 'UBIDS36487', '$2y$10$NXNcqDKXHnz8IlZEVNh6huSXziVJ94dEXkcmGrWKMTWiaRX.EQKtG'),
 (17, 25, 'UBIDS24589', '$2y$10$HkcfvWw/vhY2tmZACnCFBuwGR3k51pBpb5ojbTM5JtFZ5ATPqBi5O'),
 (18, 26, 'UBIDS65879', '$2y$10$1xiPN75t4vSWaDD1FImdbuWzewknr1hi60f64vWLGdVe1/rWsDbre'),
-(19, 27, 'UBIDS54789', '$2y$10$TuhdlrqPoQpd9q741VT08OQZMirVeL6y1jjnZZWHncerGfyZtaSQi');
+(19, 27, 'UBIDS54789', '$2y$10$TuhdlrqPoQpd9q741VT08OQZMirVeL6y1jjnZZWHncerGfyZtaSQi'),
+(20, 28, 'DEY', '$2y$10$6x04IyQrRN6fB7V7Il026.AlEeHivMU8bBbAt99tF0kHm/zm8D8DS');
 
 --
 -- Indexes for dumped tables
@@ -331,13 +345,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `appraisal`
 --
 ALTER TABLE `appraisal`
-  MODIFY `appraisal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `appraisal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `appraisal_details`
 --
 ALTER TABLE `appraisal_details`
-  MODIFY `appraisal_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `appraisal_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `departments`
@@ -355,7 +369,7 @@ ALTER TABLE `fiscal_sessions`
 -- AUTO_INCREMENT for table `resetpassword`
 --
 ALTER TABLE `resetpassword`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `schools_faculties`
@@ -367,13 +381,13 @@ ALTER TABLE `schools_faculties`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
