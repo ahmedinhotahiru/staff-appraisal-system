@@ -552,7 +552,7 @@ function send_mail($to, $subject, $body) {
    
     
     $from = 'ahmedmailer00@gmail.com';
-    $from_name = 'Thylies, Inc';
+    $from_name = 'SDD UBIDS STAFF APPRAISAL';
     
 
     $mail = new PHPMailer();
@@ -560,7 +560,7 @@ function send_mail($to, $subject, $body) {
     $mail->SMTPAuth = true; 
                             
     $mail->SMTPSecure = 'ssl'; 
-    $mail->Host = 'smtp.thylies.com';
+    $mail->Host = 'smtp.gmail.com';
     $mail->Port = 465;  
     $mail->Username = 'ahmedmailer00@gmail.com';
     $mail->Password = 'F123456789f';
