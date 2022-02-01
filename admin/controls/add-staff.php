@@ -57,7 +57,7 @@ if(isset($_POST['add-staff'])) {
         header("Location: ../add-staff.php?error=emptySchFacDept&role=$role&title=$title&staff_name=$staff_name&staff_id_no=$staff_id_no&position=$position&sch_fac_dept_id=$sch_fac_dept_id&email=$email");
         exit();
     }
-    elseif(!preg_match("/^[a-z A-Z \.]+$/", $staff_name)) {
+    elseif(!preg_match("/^[a-z A-Z \. -]+$/", $staff_name)) {
         header("Location: ../add-staff.php?error=staffName&role=$role&title=$title&staff_name=$staff_name&staff_id_no=$staff_id_no&position=$position&sch_fac_dept_id=$sch_fac_dept_id&email=$email");
         exit();
     }
