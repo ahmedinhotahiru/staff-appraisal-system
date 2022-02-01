@@ -2,6 +2,12 @@
 
 
 // local connection
+// define('HOST_SERVER', 'localhost:3308');
+// define('DB_USER', 'root');
+// define('DB_PASSWORD', '');
+// define('DB_NAME', 'appraisal');
+
+
 define('HOST_SERVER', 'localhost');
 define('DB_USER', 'ngs');
 define('DB_PASSWORD', 'Ngsappdb123$');
