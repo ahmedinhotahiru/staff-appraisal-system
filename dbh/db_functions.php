@@ -551,35 +551,38 @@ function send_mail($to, $subject, $body) {
 
    
     
-    $from = 'ahmedmailer00@gmail.com';
+    $from = 'support@ngsapp.com';
     $from_name = 'SDD UBIDS STAFF APPRAISAL';
     
 
-    $mail = new PHPMailer();
-    $mail->IsSMTP();
-    $mail->SMTPAuth = true; 
-                            
-    $mail->SMTPSecure = 'ssl'; 
-    $mail->Host = 'smtp.gmail.com';
-    $mail->Port = 465;  
-    $mail->Username = 'ahmedmailer00@gmail.com';
-    $mail->Password = 'F123456789f';
-                            
-    $mail->IsHTML(true);
-    $mail->WordWrap = 50;
-    $mail->From = "ahmedmailer00@gmail.com";
-    $mail->FromName = $from_name;
-    $mail->Sender = $from;
-    $mail->AddReplyTo($from, $from_name);
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->AddAddress($to);
-    $resultMail = $mail->Send();
-
-    if (!$resultMail) {
-        echo "<script>alert('Please try sending email Later, Error Occured while Processing...');</script>";
-    } else {
+    try {
+        //code...
+        
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->SMTPAuth = true; 
+                                
+        // $mail->SMTPSecure = 'ssl'; 
+        $mail->Host = 'smtp-pulse.com';
+        $mail->Port = 2525;  
+        $mail->Username = 'optsys9@gmail.com';
+        $mail->Password = 'gbogpAL7NKb';
+                                
+        $mail->IsHTML(true);
+        $mail->WordWrap = 50;
+        $mail->From = "support@ngsapp.com";
+        $mail->FromName = $from_name;
+        $mail->Sender = $from;
+        $mail->AddReplyTo($from, $from_name);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->AddAddress($to);
+        $resultMail = $mail->Send();
         return true;
+
+    } catch (Exception $e) {
+        // echo $e->getMessage();
+        echo "<script>alert('Please try sending email Later, Error Occured while Processing...');</script>";
     }
 }
 

@@ -67,7 +67,7 @@ if(isset($_POST['reset-password'])) {
     if($stmt->execute([$userEmail, $selector, $hashedToken, $expires])) {
 
       $to   = $userEmail;
-      $from = 'ahmedmailer00@gmail.com';
+      $from = 'support@ngsapp.com';
       $from_name = 'SDD UBIDS STAFF APPRAISAL';
       $subject = 'Reset your password';
       $base_url = "http://$_SERVER[HTTP_HOST]";
@@ -79,15 +79,15 @@ if(isset($_POST['reset-password'])) {
       $mail->IsSMTP();
       $mail->SMTPAuth = true; 
                               
-      $mail->SMTPSecure = 'ssl'; 
-      $mail->Host = 'smtp.gmail.com';
-      $mail->Port = 465;  
-      $mail->Username = 'ahmedmailer00@gmail.com';
-      $mail->Password = 'F123456789f';
+      // $mail->SMTPSecure = 'ssl'; 
+      $mail->Host = 'smtp-pulse.com';
+      $mail->Port = 2525;  
+      $mail->Username = 'optsys9@gmail.com';
+      $mail->Password = 'gbogpAL7NKb';
                               
       $mail->IsHTML(true);
       $mail->WordWrap = 50;
-      $mail->From = "ahmedmailer00@gmail.com";
+      $mail->From = "support@ngsapp.com";
       $mail->FromName = $from_name;
       $mail->Sender = $from;
       $mail->AddReplyTo($from, $from_name);
