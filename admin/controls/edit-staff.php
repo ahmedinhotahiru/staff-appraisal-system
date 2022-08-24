@@ -92,27 +92,41 @@ if(isset($_POST['edit-staff'])) {
 
         if($stmt->execute([$staff_id_no, $title, $staff_name, $sch_fac_dept_id, $position, $email, $staff_id])) {
 
-            switch ($role) {
-                case "Dean":
-                    header("Location: ../deans.php?edit=success");
-                    exit();
-                    break;
+            // update staff id_no on users table as well if role is dean or HOD
+            if( ($role == "Dean") || ($role == "HOD")) {
 
-                case "HOD":
-                    header("Location: ../hods.php?edit=success");
-                    exit();
-                    break;
+                $sql = "UPDATE users SET staff_id_no=? WHERE staff_id=?";
 
-                case "Lecturer":
-                    header("Location: ../lecturers.php?edit=success");
-                    exit();
-                    break;
+                // pdo query
+                $stmt = $pdo->prepare($sql);
+
+                if($stmt->execute([$staff_id_no, $staff_id])) {
+
                 
-                default:
-                    # code...
-                    break;
-            }
+                    switch ($role) {
+                        case "Dean":
+                            header("Location: ../deans.php?edit=success");
+                            exit();
+                            break;
 
+                        case "HOD":
+                            header("Location: ../hods.php?edit=success");
+                            exit();
+                            break;
+
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+
+                }
+            }
+            else {
+
+                header("Location: ../lecturers.php?edit=success");
+                exit();
+            }
         }
         else {
 

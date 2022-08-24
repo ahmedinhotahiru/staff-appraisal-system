@@ -219,11 +219,23 @@
                                         }
                                     }
 
+                                    // get momentarily added to check lack of staff
+                                    else {
+                                        
+                                        echo '<script>
+                                                alert("No HODs found in your School/Faculty. Please contact administrator.");
+                                                window.location.href="appraisal-select-session.php";
+                                            </script>';
+                                        
+                                        exit();
+                                    }
+
                                 }
                                 else {
 
                                     // for hods, display lecturers
                                     $all_staff = select_all_where_and("staff", "role", "Lecturer", "sch_fac_dept_id", $_SESSION['appraisal_sch_fac_dept_id']);
+
 
                                     if(count($all_staff) > 0) {
 
@@ -259,6 +271,17 @@
                                                 $unappraised_staff++;
                                             }
                                         }
+                                    }
+
+                                    // get momentarily added to check lack of staff
+                                    else {
+                                        
+                                        echo '<script>
+                                                alert("No lecturers found in your department. Please contact administrator.");
+                                                window.location.href="appraisal-select-session.php";
+                                            </script>';
+                                        
+                                        exit();
                                     }
 
 

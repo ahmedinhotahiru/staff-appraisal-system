@@ -365,7 +365,8 @@
 
                                                 <br>
                                                 <div class="form-group">
-                                                    <button type="submit" name="add-staff" class="btn btn-primary"><i class="bx bx-plus"></i>Add <?php echo $role; ?></button>
+                                                    <button type="submit" name="add-staff" class="btn btn-primary"><i class="bx bx-plus"></i>Add Staff</button>
+                                                    <!-- <button type="submit" name="add-staff" class="btn btn-primary"><i class="bx bx-plus"></i>Add <?php echo $role; ?></button> -->
                                                 </div>
                                             </form>
                                         </div>

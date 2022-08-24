@@ -248,7 +248,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Staff Appraisal</a></li>
-                                            <li class="breadcrumb-item active">Select Fiscal Year</li>
+                                            <li class="breadcrumb-item active">Submitted</li>
                                         </ol>
                                     </div>
 
@@ -263,8 +263,8 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">Select Fiscal Year</h4>
-                                        <p class="card-title-desc">Please select a fiscal year to appraise.</p>
+                                        <h4 class="card-title">Successfully submitted</h4>
+                                        <p class="card-title-desc">Appraisal result is displayed below.</p>
                                     </div>
                                     <!-- end card header -->
 

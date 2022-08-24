@@ -211,7 +211,8 @@
                                         </div>
                                         <hr class="my-4">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <!-- col-sm-6 -->
+                                            <div class="col-6">
                                                 <div>
                                                     <h5 class="font-size-15 mb-3">Staff:</h5>
                                                     <h5 class="font-size-14 mb-2"><?php echo $staff_name . " ($role)"; ?></h5>
@@ -220,7 +221,9 @@
                                                     <p><?php echo $position; ?></p>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+
+                                            <!-- can remove flex justify in future -->
+                                            <div class="col-6 d-flex justify-content-end">
                                                 <div>
                                                     <div>
                                                         <h5 class="font-size-15">Fiscal Year:</h5>
